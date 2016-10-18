@@ -1,11 +1,16 @@
 $(function() {
-	var map, geolocation;
 	//加载地图，调用浏览器定位服务
-	map = new AMap.Map('container', {
+	var map = new AMap.Map('container', {
 		resizeEnable: true
 	});
+	map.plugin(["AMap.ToolBar"], function() {
+		map.addControl(new AMap.ToolBar());
+	});
+	if(location.href.indexOf('&guide=1')!==-1){
+		map.setStatus({scrollWheel:false})
+	}
 	map.plugin('AMap.Geolocation', function() {
-		geolocation = new AMap.Geolocation({
+		var geolocation = new AMap.Geolocation({
 			enableHighAccuracy: true, //是否使用高精度定位，默认:true
 			timeout: 10000, //超过10秒后停止定位，默认：无穷大
 			buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
@@ -42,4 +47,5 @@ $(function() {
 	$('.amap-geolocation-con').css('right', 'auto');
 	$('.amap-geolocation-con').css('bottom', '1.5625rem');
 	$('.amap-geolocation-con').css('left', '0.9375rem');
+	
 });
