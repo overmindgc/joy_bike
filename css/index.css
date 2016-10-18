@@ -3,9 +3,13 @@
 .index_header a{width:1.625rem;}
 .index_header a img{width:100%;}
 .index_footer{bottom: 1.4375rem;width:100%;text-align: center;}
-.index_footer a{display: inline-block;border-radius: 50%;}
-.index_footer a img{width:5.3125rem;height:5.3125rem;}
-
+.index_footer a{display: inline-block;}
+.index_scan{border-radius: 50%;}
+.index_scan img{width:5.3125rem;height:5.3125rem;}
+.index_refresh{left:0.9375rem;bottom:2.8125rem;}
+.index_refresh img{width:2.125rem;height:2.125rem;}
+.index_tip{right:0.9375rem;bottom:0.125rem;}
+.index_tip img{width:1.875rem;height:1.875rem;}
 /*map css*/
 #container {width:100%;height:auto;top:2.75rem;}  
 #tip{top:2.75rem;}
