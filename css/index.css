@@ -1,6 +1,13 @@
+/*index css*/
 .index_header{line-height:2.75rem;background: url(../images/index_logo.png) no-repeat center #2a2a2a;background-size: 5.25rem 1.3125rem;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;padding:0 0.9375rem;}
 .index_header a{width:1.625rem;}
- .index_header a img{width:100%;}
+.index_header a img{width:100%;}
 .index_footer{bottom: 1.4375rem;width:100%;text-align: center;}
 .index_footer a{display: inline-block;border-radius: 50%;}
 .index_footer a img{width:5.3125rem;height:5.3125rem;}
+
+/*map css*/
+#container {width:100%;height:auto;top:2.75rem;}  
+#tip{top:2.75rem;}
+.amap-geolocation-con .amap-geo{width:2.125rem;height:2.125rem;background: url(images/index_loc.png) no-repeat;background-size:2.125rem;border:none;bottom:1.5625rem;left:0.9375rem;}
+.amap-toolbar{display: none;} 
