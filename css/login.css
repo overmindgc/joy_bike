@@ -1,0 +1,160 @@
+html,body{
+	min-height: 100%;
+	background:#fff;
+}
+.login_header {
+    line-height: 2.75rem;
+    background: #2a2a2a;
+    background-size: 5.25rem 1.3125rem;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 0.9375rem;
+    position: relative;
+}
+.login_header .backBtn{
+	width:1.6875rem;
+	height:1.6875rem;
+	display:block;
+	position:absolute;
+	top:0.5rem;
+	left:0.90625rem;
+	background:url('../images/login/common_fanhui_n.png')no-repeat;
+	background-size:contain;
+}
+.login_header .backBtn:active{
+	background:url('../images/login/common_fanhui_y.png')no-repeat;
+}
+.login_header .backBtn img{
+	width:100%;
+	height:100%;
+}
+.login_header h1{
+	width:100%;
+	text-align: center;
+	font-size: 1.1875rem;
+	color:#ccc;
+	font-family: "PingFang-SC-Medium";
+}
+#login_container {
+    width: 100%;
+    height: auto;
+    margin-top: 2.65625rem;
+    box-sizing: border-box;
+    padding:0 0.9375rem;
+}
+.login_username{
+	height:2.75rem;
+	width:100%;
+	display:inline-block;	
+	outline:none;
+	border:none;
+	box-sizing: border-box;
+	
+}
+.login_info_phone b{
+	width:0.875rem;
+	height:1.125rem;
+	display:block;
+	position: absolute;
+	top:0.8125rem;
+	left:1.21875rem;
+	background:url('../images/login/denglu_shouji.png')no-repeat;
+	background-size:contain;
+}
+.login_info_pass b{
+	width:1.03125rem;
+	height:0.875rem;
+	display:block;
+	position: absolute;
+	top:0.8125rem;
+	left:1.21875rem;
+	background:url('../images/login/denglu_mima.png')no-repeat;
+	background-size:contain;
+}
+.login_info{
+	height:2.75rem;
+	margin-bottom:0.625rem;
+	border-radius:0.15625rem;
+	overflow:hidden;
+	border:0.03125rem solid #E1E1E1;
+	position: relative;
+	padding-left:3.125rem;
+	box-sizing: border-box;
+}
+.login_passCode{
+	height:2.75rem;
+	width:100%;
+	display:inline-block;
+	border:none;
+	outline:none;
+	box-sizing: border-box;
+}
+.login_validCode{
+	background:#E1E1E1;
+	color:#fff;	
+	display:inline-block;
+	width: 5.5625rem;
+	height:2.75rem;
+	position: absolute;
+	top:0;
+	right:0;
+	line-height: 2.75rem;
+	text-align: center;
+}
+.login_validCode.valid{
+	background:#ed6d2b;
+	color:#fff;
+}
+.login_infoBtn{
+	margin-top:1.25rem;
+	padding:0;
+	border-radius:0.3125rem;
+}
+.login_infoBtn a{
+	display: block;
+	text-align: center;
+	line-height: 2.78125rem;
+	height:2.78125rem;
+	background:#E1E1E1;
+	color:#fff;
+}
+.login_infoBtn a.login_permit{
+	background:#ed6d2b;
+}
+.login_agreeContract{
+	margin-top: 1.40625rem;
+	font-size:0.8125rem;
+	color:#999;
+}
+.login_agreeContract a{
+	font-style:normal;
+	color:#666;
+}
+#login_agree{
+	visibility: hidden;
+	position: relative;
+	margin-left:-1rem;
+}
+.login_agreeContract em.chosed{
+	display:inline-block;	
+	width:1.15625rem;
+	height:1.15625rem;
+	overflow: hidden;	
+	opacity: 1;	
+	background:url('../images/login/common_xuanze_y.png')no-repeat;
+    background-size: contain;
+    position: relative;
+    top:0.2rem;
+}
+.login_agreeContract em.unchosed{
+	display:inline-block;	
+	width:1.15625rem;
+	height:1.15625rem;
+	overflow: hidden;	
+	opacity: 1;	
+	background:url('../images/login/common_xuanze_n.png')no-repeat;
+    background-size: contain;
+    position: relative;
+    top:0.2rem;
+}

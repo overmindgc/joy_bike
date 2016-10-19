@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>手机验证</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/login.css" />
+	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
+	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
+	<script src="js/login.js"></script>
+	<body>
+		<header class="login_header">
+			<a href="javascript:;" class="backBtn"></a>
+			<h1>手机验证</h1>	
+		</header>
+		
+		<div id="login_container">
+			<form action="">
+				<p class='login_info login_info_phone'>
+					<b></b>
+					<input type="text" class='login_username' placeholder="请输入手机号"/>
+					<!--验证通过加valid类-->
+					<span class='login_validCode'>发送验证码</span>
+				</p>
+				<p class='login_info login_info_pass'>
+					<b></b>
+					<input type="text" class='login_passCode' placeholder="请输入验证码" />
+				</p>
+				<p class='login_info login_infoBtn'>
+					<!--login_permit可以点击类-->
+					<a href='javascript:;'class='ev_loginBtn'>开始</a>
+				</p>
+				<p class='login_agreeContract'>
+					<!--未选中unchosed-->
+					<em class='chosed ev_checkState'></em>
+					<label for="login_agree">
+						<input type="checkbox" checked="true" id="login_agree"/>
+						<span class='ev_checkLabel'>点击即表示已阅读并同意</span>《<a href="">用车服务条款</a>》
+					</label> 
+				</p>
+			</form>
+		</div>
+		
+		
+	</body>
+</html>
