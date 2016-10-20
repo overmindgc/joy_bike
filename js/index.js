@@ -16,6 +16,7 @@ $(function() {
 			timeout: 10000, //超过10秒后停止定位，默认：无穷大
 			buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
 			zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+//			showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
 			buttonPosition: 'RB'
 		});
 		map.addControl(geolocation);
@@ -32,6 +33,33 @@ $(function() {
 		str.push('精度：' + data.accuracy + ' 米');
 		str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
 		document.getElementById('tip').innerHTML = str.join('<br>');*/
+		
+		//添加点标记，并使用自己的icon
+    var marker=new AMap.Marker({
+        map: map,
+		position: [data.position.getLng(),data.position.getLat()],
+        icon: new AMap.Icon({            
+            size: new AMap.Size(40, 50),  //图标大小
+            image: "http://webapi.amap.com/theme/v1.3/images/newpc/way_btn2.png",
+            imageOffset: new AMap.Pixel(0, -60)
+        })        
+    });
+		
+		
+		/*var timer;
+		if(navigator.geolocation){
+            timer=navigator.geolocation.watchPosition(function(ev){
+                alert(ev.coords.longitude+','+ev.coords.latitude);
+            }, function(){
+                alert('获取地理信息失败');
+            },{frequency: 3000});
+        }else{
+            alert('您的设备不支持地理定位');
+        }
+        
+        setTimeout(function(){
+            navigator.geolocation.clearWatch(timer);
+        }, 10000);*/
 	}
 
 	//解析定位错误信息
@@ -43,6 +71,9 @@ $(function() {
 		});*/
 		document.getElementById('tip').innerHTML = '请开启手机定位信息';
 	}
+	
+	//当前位置图标
+//	$('.amap-marker-content div img').attr('src','images/index_point.png');
 	
 	//定位图标偏移
 	/*$('.amap-geolocation-con').css('right', 'auto');
@@ -121,20 +152,77 @@ $(function() {
 	function getBikes(){
 		var markers=[];
 		for (var i = 0; i < bikes.length; i += 1) {
-			var icon = new AMap.Icon({
-	            image : 'images/index_bike.png',
-	            //icon可缺省，缺省时为默认的蓝色水滴图标，
-	            size : new AMap.Size(35,39.5)
-	    	});
-			var marker = new AMap.Marker({
-				icon:icon,//24px*24px
-				position: bikes[i].center.split(','),
-				offset : new AMap.Pixel(-17.5,-19.75),
-				title: bikes[i].name,
-				map: map
-			});
-			markers.push(marker);
+			(function(index){
+				var icon = new AMap.Icon({
+		            image : 'images/index_bike.png',
+		            //icon可缺省，缺省时为默认的蓝色水滴图标，
+		            size : new AMap.Size(35,39.5)
+		    	});
+				var marker = new AMap.Marker({
+					icon:icon,//24px*24px
+					position: bikes[i].center.split(','),
+					offset : new AMap.Pixel(-17.5,-19.75),
+					title: bikes[i].name,
+					map: map
+				});
+				marker.on('click',function(){
+					javascript:openInfo(index);
+				})
+				markers.push(marker);
+			})(i);
+			
 		}		
 	}
 	
+	//在指定位置打开信息窗体
+    function openInfo(i) {
+        //构建信息窗体中显示的内容
+        var title = '';
+        var content = [];
+    	content.push(
+    		'<div style="position:relative;top:-1.5625rem;width:3rem;height: 2.15625rem;border-radius: 2.5px;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);">'+
+			'<div style="z-index:2;position:absolute;left:0;top:0;width:3rem;height: 2.15625rem;'+
+			'background:url(images/index_thumbnail.png) no-repeat #fff 0.125rem 0.125rem;'+
+			'background-size:2.75rem 1.9375rem;"></div>'+
+			'<span style="display:block;background:#fff;position:absolute;bottom:-0.15rem;left:50%;margin-left:-0.15rem;width:0.3125rem;height:0.3125rem;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);transform: rotate(-45deg);"></span></div>'
+		);
+        var infoWindow = new AMap.InfoWindow({
+	        isCustom: true,  //使用自定义窗体
+	        content: createInfoWindow(title, content.join("<br/>")),
+	    });
+        infoWindow.open(map, bikes[i].center.split(','));
+        
+        //构建自定义信息窗体
+	    function createInfoWindow(title, content) {
+	        var info = document.createElement("div");
+	        info.className = "index_thumbnail";
+			info.innerHTML = content;
+	        return info;
+	    }
+	    
+	    //关闭信息窗体
+	    function closeInfoWindow() {
+	        map.clearInfoWindow();
+	    }
+    }
+
+
+
+	//扫描二维码点击图片切换
+	var index_onOff=false;
+	$('.index_scan').on('click',function(){
+		if(index_onOff){
+			$(this).children('img').attr('src','images/index_scan_hover.png');
+			index_onOff=true;
+		}else{
+			$(this).children('img').attr('src','images/index_scan.png');
+			index_onOff=false;
+		}
+	})
+
+
+
+
+
+
 });
