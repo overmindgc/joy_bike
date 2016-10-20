@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>实名认证</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/auth.css" />
+	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
+	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
+	<script src="js/auth.js"></script>
+	<body>
+		<header class="login_header">
+			<header><div class="common_back"></div>实名认证</header>				
+		</header>
+		<div id="auth_container">
+			<form action="">
+				<div class="auth_textWrap">
+					<p><input type="text"placeholder='请输入真实姓名' class="auth_trueName"/></p>
+					<p><input type="text" placeholder="请输入身份证号码"/></p>
+					<p>
+						<select class="auth_country">
+							<option value="" style='width:200px;'>请输入您的国籍</option>
+							<option value="">中国</option>
+						</select>
+					</p>
+				</div>
+				<div class="auth_photo">
+					<div class="photo">
+						<div class="photoArea">
+							<img src="images/auth/examplePhoto.png" alt="" />
+						</div>
+						<p class="photoTitle">手持证件照</p>
+					</div>
+					<div class="photo">
+						<div class="photoArea">
+							<img src="images/auth/common_shangchuantupian.png" alt="" />
+							<input type="file" id="upload1"/>
+						</div>
+						<p class="photoTitle">手持证件照</p>
+					</div>
+					<div class="photo">
+						<div class="photoArea">
+							<img src="images/auth/examplePhoto.png" alt="" />
+						</div>
+						<p class="photoTitle">证件正面照</p>
+					</div>
+					<div class="photo">
+						<div class="photoArea">
+							<img src="images/auth/common_shangchuantupian.png" alt="" />
+							<input type="file" id="upload2"/>
+						</div>
+						<p class="photoTitle">证件正面照</p>
+					</div>
+				</div>
+				<div class="auth_photoTip">
+					提示:请提供2张照片，一张为本人手持身份证件的正面合影; 另一张为身份证的原照片。请确保五官、证件内容均清晰可见。
+				</div>
+				<div class="auth_btnWrap">
+					<a href="javascript:;" class='auth_btn valid'>认证</a>
+				</div>
+				
+			</form>
+		</div>
+		
+		
+	</body>
+</html>

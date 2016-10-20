@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
-		<title>押金充值</title>
+		<title>实名认证</title>
 	</head>
 	<link rel="stylesheet" type="text/css" href="css/common.css" />
 	<link rel="stylesheet" type="text/css" href="css/auth.css" />
@@ -15,28 +15,29 @@
 	<script src="js/auth.js"></script>
 	<body>
 		<header class="login_header">
-			<header><div class="common_back"></div>实名认证<a href="" class="auth_pass">暂不认证</a></header>				
+			<header><div class="common_back"></div>实名认证</header>				
 		</header>
 		<div class='auth_process'>
 			<p>
 				<span class="auth_phone">手机验证</span>
-				<span class="auth_renzheng active">实名认证</span>
-				<span class="auth_deposit">押金充值</span>
+				<span class="auth_renzheng">实名认证</span>
+				<span class="auth_deposit active">押金充值</span>
 				<span class="auth_finish">完成注册</span>
 			</p>
 		</div>
-		<div id="">
+		<div id="auth_deposit">
 			<form action="">
+				<div class="auth_deposit_count">
+					<p>充值金额<span class="count">400元&nbsp;></span></p>
+				</div>
 				<div class="auth_textWrap">
-					<p><input type="text"placeholder='请输入真实姓名' class="auth_trueName"/></p>
-					<p><input type="text" placeholder="请输入身份证号码"/></p>
+					<p class="deposit_way"><span class="wx_logo"></span>微信<span class="choseState unchosed"></span></p>
+					<p class="deposit_way"><span class="zfb_logo"></span>支付宝<span class="choseState chosed"></span></p>
 				</div>
 				<div class="auth_btnWrap">
-					<a href="javascript:;" class='auth_btn valid'>认证</a>
+					<a href="javascript:;" class='auth_btn valid ev_deposit'>充值</a>
 				</div>
-				<p class="authTip">
-					<a href="">"无中华人民共和国居民身份证者，请点此进行认证"</a>
-				</p>
+				
 			</form>
 		</div>
 		
