@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>我的钱包</title>
+		<link href="css/common.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+
+	<body>
+		<header><div class="common_back"></div>我的钱包</header>
+		<div class="paySuc">
+			<div class="paySuc_bg"></div>
+			<div class="paySuc_num ft-32 fc-333">成功支付<span class="fc-ed6d2b">2</span>元</div>
+			<div class="check-detail-btn">查看明细</div>
+		</div>
+		<ul class="bd-t bd-b paySuc_list ft-32 fc-666 bgc-fff mt-60">
+			<li class="bd-b">骑行时间<span class="fc-333 fr mr-30">50分钟</span></li>
+			<li>我的钱包<span class="fc-ed6d2b fr mr-30">5元</span></li>
+		</ul>
+		<div class="ft-26 fc-999 lh-60 pd-l-30">拍摄停车照片，获取信用分</div>
+		<div class="pd-30 bgc-fff common_upload"><img src="images/common_upload.png" /></div>
+		<nav class="paySuc_nav dp-box dp-flex">
+			<a href="javascript:;" class="dp-f-1">行程详情</a>
+			<a href="javascript:;" class="dp-f-1">分享</a>
+		</nav>
+		<div id="mask" style="display: block;"></div>
+		<!--费用明细弹窗-->
+		<div class="paySuc_detail bgc-fff">
+			<ul>
+				<li class="bgc-ed6d2b pd-30">
+					<dl class="fc-fff cl">
+						<dt class="fl">
+							<div class="ft-32">总费用</div>
+							<div class="ft-26 paySuc_note">共骑行50分钟</div>
+						</dt>
+						<dd class="fr"><span class="ft-64">2</span> 元</dd>
+					</dl>
+				</li>
+				<li class="pd-30">
+					<dl class="cl">
+						<dt class="fl">
+							<div class="ft-32 fc-999">基本费用</div>
+							<div class="ft-26 paySuc_note fc-999">1分钟／30元</div>
+						</dt>
+						<dd class="fr"><span class="ft-64">2</span> 元</dd>
+					</dl>
+				</li>
+				<li class="pd-30">
+					<dl class="cl">
+						<dt class="fl">
+							<div class="ft-32 fc-999 pd-t-16">基本费用</div>
+						</dt>
+						<dd class="fr"><span class="ft-64">0</span> 元</dd>
+					</dl>
+				</li>
+				<li class="ft-26 fc-999 pd-30 bd-none">温馨提示：当您的信用分低于80时，我们将收取您100元／30分钟的浮动费用</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
