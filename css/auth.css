@@ -1,0 +1,119 @@
+html, body {
+  height: 100px;
+  background: #f0f0f0;
+}
+
+.auth_process {
+  padding: 2.5rem 0.875rem;
+  box-sizing: border-box;
+}
+.auth_process p {
+  width: 100%;
+  padding-top: 1.25rem;
+  border-top: 1px solid #cccccc;
+  font-size: 0.75rem;
+  color: #999;
+}
+.auth_process p span {
+  display: inline-block;
+  width: 24%;
+  text-align: center;
+  position: relative;
+}
+.auth_process p span.auth_phone:before {
+  background: url("../images/auth/common_shoujiyanzheng_n.png") no-repeat;
+  position: absolute;
+  top: -2.0625rem;
+  left: 35%;
+  content: '';
+  width: 1.5625rem;
+  height: 1.5625rem;
+  display: block;
+  background-size: cover;
+}
+.auth_process p span.auth_active {
+  color: #ed6d2b;
+}
+.auth_process p span.auth_active:before {
+  background: url("../images/auth/common_shimingrenzheng_y.png") no-repeat;
+  position: absolute;
+  top: -2.1875rem;
+  left: 30%;
+  content: '';
+  width: 1.875rem;
+  height: 1.875rem;
+  display: block;
+  background-size: cover;
+}
+.auth_process p span.auth_deposit:before {
+  background: url("../images/auth/common_yajinchongzhi_n.png") no-repeat;
+  position: absolute;
+  top: -2.0625rem;
+  left: 35%;
+  content: '';
+  width: 1.5625rem;
+  height: 1.5625rem;
+  display: block;
+  background-size: cover;
+}
+.auth_process p span.auth_finish:before {
+  background: url("../images/auth/common_wangzhengzhuce_n.png") no-repeat;
+  position: absolute;
+  top: -2.0625rem;
+  left: 35%;
+  content: '';
+  width: 1.5625rem;
+  height: 1.5625rem;
+  display: block;
+  background-size: cover;
+}
+
+.auth_textWrap {
+  margin-bottom: 1.875rem;
+}
+.auth_textWrap p {
+  width: 100%;
+  background: #f0f0f0;
+  color: #ccc;
+  margin-bottom: 0.03125rem;
+  height: 2.8125rem;
+}
+.auth_textWrap p input {
+  display: block;
+  width: 100%;
+  background: #fff;
+  height: 100%;
+  padding-left: 0.9375rem;
+  box-sizing: border-box;
+  border: none;
+}
+
+.auth_btnWrap {
+  padding: 0 0.9375rem;
+}
+.auth_btnWrap a {
+  display: block;
+  border-radius: 0.3125rem;
+  width: 21.5625rem;
+  height: 2.8125rem;
+  margin: 0 auto;
+  background: #ccc;
+  line-height: 2.8125rem;
+  color: #fff;
+  text-align: center;
+  font-size: 1.1875rem;
+}
+.auth_btnWrap a.valid {
+  background: #ed6d2b;
+}
+
+.authTip {
+  margin-top: 0.6875rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.1875rem;
+  color: #999;
+}
+.authTip a {
+  color: inherit;
+}
