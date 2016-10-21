@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Expires" content="0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="format-detection" content="telephone=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>手动开锁</title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/scanQrcode.css" />
+	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
+	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
+	<script src="js/auth.js"></script>
+	<body>
+		
+		<header class="login_header">
+			<header><div class="common_back"></div>手动开锁</header>				
+		</header>		
+		<div class="openManual_bg">
+			<div class="bikeNumber">
+				<img src="images/scan/bikeAndNumber.png" alt="" />
+			</div>
+			<div class="numberInput">
+				 
+			    <input type="tel" maxlength="7" class="bikeNo_input" id="bikeNo_input">  
+			    <div class="fake-box">  
+			        <input type="text" readonly="" value=''>  
+			        <input type="text" readonly="">  
+			        <input type="text" readonly="">  
+			        <input type="text" readonly="">  
+			        <input type="text" readonly="">  
+			        <input type="text" readonly=""> 
+		        	<input type="text" readonly="" style='margin-right:0;'>  
+			    </div> 
+			    <div class="friendTip">请确认您输入了正确的车辆编码</div>
+			</div>
+		</div>		
+		<div class="confirmBtn">
+			确认
+		</div>
+	</body>
+</html>
+<script>
+	var $input = $(".fake-box input");  
+            $("#bikeNo_input").on("input", function() {  
+                var pwd = $(this).val().trim();  
+                for (var i = 0, len = pwd.length; i < len; i++) {  
+                    $input.eq("" + i + "").val(pwd[i]);  
+                }  
+                $input.each(function() {  
+                    var index = $(this).index();  
+                    if (index >= len) {  
+                        $(this).val("");  
+                    }  
+                });  
+                if (len == 6) {  
+                    //执行其他操作  
+                }  
+            });  
+</script>
