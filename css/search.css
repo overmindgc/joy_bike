@@ -1,0 +1,57 @@
+html, body {
+  height: 100%;
+  background: #f0f0f0;
+}
+
+.search_input {
+  width: 15.6875rem;
+  height: 1.6875rem;
+  border: 0.03125rem solid #e5e5e5;
+  background: #2a2a2a;
+  font-size: 0.8125rem;
+  box-sizing: border-box;
+  padding-left: 2.5rem;
+  outline: none;
+  background: url("../images/search/searchIcon.png") no-repeat;
+  background-size: 8%;
+  background-position: 0.5625rem 0.15625rem;
+}
+
+.search_cancel {
+  position: absolute;
+  right: 0.9375rem;
+  top: 0;
+  font-size: 0.8125rem;
+  color: #ccc;
+}
+
+.searchHistory {
+  margin-top: 1.21875rem;
+  text-align: left;
+}
+.searchHistory .searchItem {
+  box-sizing: border-box;
+  padding: 0.9375rem;
+  padding-left: 2.34375rem;
+  background: #fff url("../images/search/placeIcon.png") no-repeat;
+  background-size: 5%;
+  background-position: 0.9375rem 1.5rem;
+}
+.searchHistory .searchItem h3 {
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
+  color: #666;
+}
+.searchHistory .searchItem p {
+  font-size: 0.75rem;
+  line-height: 1.1875rem;
+  color: #999;
+}
+
+.clear_searchHistory {
+  margin-top: 1.15625rem;
+  text-align: center;
+  font-size: 0.75rem;
+  line-height: 1.1875rem;
+  color: #999;
+}

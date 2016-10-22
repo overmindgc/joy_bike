@@ -113,7 +113,6 @@ html, body {
 .auth_btnWrap a {
   display: block;
   border-radius: 0.3125rem;
-  width: 21.5625rem;
   height: 2.8125rem;
   margin: 0 auto;
   background: #ccc;
@@ -126,7 +125,7 @@ html, body {
   background: url("../images/auth/common_btn_n.9.png") no-repeat;
   background-size: cover;
 }
-.auth_btnWrap a.active {
+.auth_btnWrap a.valid:active {
   background: url("../images/auth/common_btn_y.9.png") no-repeat;
   background-size: cover;
 }
@@ -245,6 +244,7 @@ html, body {
   color: #666;
   position: relative;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 #auth_deposit .deposit_way .choseState {
   position: absolute;

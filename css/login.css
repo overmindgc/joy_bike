@@ -79,7 +79,7 @@ html,body{
 	margin-bottom:0.625rem;
 	border-radius:0.15625rem;
 	overflow:hidden;
-	border:0.03125rem solid #E1E1E1;
+	border:1pt solid #E1E1E1;
 	position: relative;
 	padding-left:3.125rem;
 	box-sizing: border-box;

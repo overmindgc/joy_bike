@@ -182,6 +182,7 @@ header.login_header {
   border: none;
   outline: none;
   opacity: 0;
+  letter-spacing: 2.5rem;
 }
 .numberInput .fake-box input {
   display: inline-block;
@@ -194,7 +195,7 @@ header.login_header {
   line-height: 4.3125rem;
   outline: none;
   border-radius: 0.3125rem;
-  margin-right: 0.25rem;
+  margin-right: 0.21875rem;
 }
 .numberInput .friendTip {
   text-align: center;

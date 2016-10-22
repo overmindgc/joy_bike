@@ -1,0 +1,148 @@
+html, body {
+  height: 100%;
+  background: #f0f0f0;
+}
+
+.report_scanArea {
+  margin: 0.625rem auto;
+  width: 21.5625rem;
+  height: 8.875rem;
+  background: #fff;
+  border-radius: 0.3125rem;
+  text-align: center;
+  padding-top: 2.6875rem;
+  box-sizing: border-box;
+}
+.report_scanArea .scanLogo {
+  width: 2.09375rem;
+  height: 2.21875rem;
+  margin: 0 auto;
+  background: url("../images/guzhangbaoxiu_saoma.png") no-repeat;
+  background-size: cover;
+}
+.report_scanArea .report_scanTip {
+  margin-top: 1.25rem;
+}
+.report_scanArea .scanAfter h3 {
+  color: #666;
+  font-size: 0.8125rem;
+  margin-top: -1.28125rem;
+}
+.report_scanArea .scanAfter .bikeNumber {
+  color: #333;
+  font-size: 2rem;
+  margin-top: 0.9375rem;
+}
+.report_scanArea .scanAfter .reScan {
+  color: #ed6d2b;
+  font-size: 1rem;
+  margin-top: 1.28125rem;
+}
+
+.reportTitle {
+  font-size: 0.8125rem;
+  color: #999;
+  line-height: 1.1875rem;
+  width: 21.5625rem;
+  margin: 0 auto;
+}
+
+.reportDetail {
+  width: 21.5625rem;
+  margin: 0 auto;
+  border-radius: 0.3125rem;
+  margin-top: 0.34375rem;
+  overflow: hidden;
+}
+.reportDetail label {
+  display: block;
+  height: 2.8125rem;
+  line-height: 2.8125rem;
+  position: relative;
+  border-bottom: 1px solid #e1e1e1;
+  padding-left: 0.8125rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #666;
+  background: #fff;
+}
+.reportDetail label input {
+  position: absolute;
+  right: 0.9375rem;
+  top: 1.09375rem;
+  opacity: 0;
+}
+.reportDetail label em {
+  display: block;
+  width: 1.15625rem;
+  height: 1.15625rem;
+  background: url("../images/login/common_xuanze_n.png") no-repeat;
+  background-size: contain;
+  position: absolute;
+  top: 0.8125rem;
+  right: 0.9375rem;
+}
+.reportDetail label.chosed em {
+  background: url("../images/login/common_xuanze_y.png") no-repeat;
+  background-size: contain;
+}
+
+.otherReasons {
+  background: #fff;
+  width: 21.5625rem;
+  height: 10.15625rem;
+  margin: 0 auto;
+  border-radius: 0.3125rem;
+  margin-top: 0.625rem;
+  padding: 0.9375rem 0.78125rem;
+  box-sizing: border-box;
+  position: relative;
+}
+.otherReasons #report_otherReasons {
+  width: 100%;
+  height: 2.8125rem;
+  resize: none;
+  border: none;
+  color: #666;
+  outline: none;
+}
+.otherReasons .uploadImg {
+  background: url("../images/auth/common_shangchuantupian.png") no-repeat;
+  background-size: contain;
+  width: 5.34375rem;
+  height: 5.34375rem;
+  position: absolute;
+  left: 0.78125rem;
+  bottom: 0.9375rem;
+}
+.otherReasons .uploadImg input {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.auth_btnWrap {
+  padding: 0 0.9375rem;
+  margin-top: 2.6875rem;
+  margin-bottom: 3.21875rem;
+}
+.auth_btnWrap a {
+  display: block;
+  border-radius: 0.3125rem;
+  height: 2.8125rem;
+  margin: 0 auto;
+  background: #ccc;
+  line-height: 2.8125rem;
+  color: #fff;
+  text-align: center;
+  font-size: 1.1875rem;
+}
+.auth_btnWrap a.valid {
+  background: url("../images/auth/common_btn_n.9.png") no-repeat;
+  background-size: cover;
+}
+.auth_btnWrap a.valid:active {
+  background: url("../images/auth/common_btn_y.9.png") no-repeat;
+  background-size: cover;
+}
