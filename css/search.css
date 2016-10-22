@@ -6,7 +6,8 @@ html, body {
 .search_input {
   width: 15.6875rem;
   height: 1.6875rem;
-  border: 0.03125rem solid #e5e5e5;
+  line-height: 1.6875rem;
+  border: 1px solid #666;
   background: #2a2a2a;
   font-size: 0.8125rem;
   box-sizing: border-box;
@@ -15,6 +16,9 @@ html, body {
   background: url("../images/search/searchIcon.png") no-repeat;
   background-size: 8%;
   background-position: 0.5625rem 0.15625rem;
+  border-radius: 0.15625rem;
+  position: relative;
+  top: -0.15625rem;
 }
 
 .search_cancel {
@@ -30,12 +34,16 @@ html, body {
   text-align: left;
 }
 .searchHistory .searchItem {
+  margin-bottom: 0.0625rem;
   box-sizing: border-box;
   padding: 0.9375rem;
   padding-left: 2.34375rem;
   background: #fff url("../images/search/placeIcon.png") no-repeat;
   background-size: 5%;
   background-position: 0.9375rem 1.5rem;
+}
+.searchHistory .searchItem a {
+  display: block;
 }
 .searchHistory .searchItem h3 {
   font-size: 0.8125rem;
