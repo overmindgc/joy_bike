@@ -28,6 +28,20 @@ function popup(s) {
         $(".ev_popup").remove();
     }, 3000)
 }
+function fnAjax(url,params,callback){ // 异步获取数据		
+		$.ajax({
+			url : url,
+			type : "POST",
+			dataType : "json",
+			data : params,
+			success : function(data){			
+				callback(data);
+			},
+			error : function(){
+				
+			}			
+		});
+	}
 String.prototype.cutString = function(len) {
     //length属性读出来的汉字长度为1
     if (this.length * 2 <= len) {
