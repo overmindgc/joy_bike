@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="css/common.css" />	
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
-	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=8255a46f698ce402928806547d2baa37"></script>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=8255a46f698ce402928806547d2baa37&plugin=AMap.Walking"></script>
 	<!--<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>-->
 	<script type="text/javascript" src="js/index.js"></script>
 	<body>
@@ -19,13 +19,13 @@
 			<a href="javascript:;" class="fl"><img src="images/index_info.png" /></a>
 			<a href="javascript:;" class="fr"><img src="images/index_search.png" /></a>
 		</header>
-		<div id="container"></div>
+		<div id="container" class="map" tabindex="0"></div>
 		<footer class="index_footer po-ab">
 			<a href="javascript:;" class="index_refresh po-ab"><img src="images/index_refresh.png" /></a>
 			<a href="javascript:;" class="index_scan"></a>
 			<a href="javascript:;" class="index_tip po-ab"><img src="images/index_tip.png" /></a>
 		</footer>
-		<nav class="index_guide bd-t">
+		<nav class="index_guide bd-t" style="display: none;">
 
 			<!--<ul>
 				<li class="index_bikePos ft-32 fc-666 bd-b">林业大学北路</li>
@@ -55,7 +55,7 @@
 					<div class="fl">正在用车 <b>26549548465</b></div>
 					<div class="fr">预计费用 <b>1元</b></div>
 				</li>
-			</ul>
+			</ul>-->
 
 			<div class="dp-flex dp-box" style="height:10rem;">
 				<ul class="dp-f-1">
@@ -76,7 +76,7 @@
 					</li>
 					<li class="index_cancel ft-26 bgc-ed6d2b">取消预约</li>
 				</ul>
-			</div>-->
+			</div>
 		</nav>
 		<div id="mask" style="z-index: 99999;"></div>
 		<!--预约提示-->

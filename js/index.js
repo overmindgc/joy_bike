@@ -1,12 +1,26 @@
 $(function() {
+	//自定义定位标记
+    var toolBar;
+    var customMarker = new AMap.Marker({
+        offset: new AMap.Pixel(-17, -36),//相对于基点的位置
+        icon: new AMap.Icon({  //复杂图标
+            size: new AMap.Size(36, 82),//图标大小
+            image: "images/index_centralPos.png", //大图地址
+            imageOffset: new AMap.Pixel(0, 0)//相对于大图的取图位置
+        })
+    });
+
 	//加载地图，调用浏览器定位服务
 	var map = new AMap.Map('container', {
 		resizeEnable: true,
-		zoom:7
-	});
-	map.plugin(["AMap.ToolBar"], function() {
-		map.addControl(new AMap.ToolBar());
-	});
+		dragEnable: true
+	});	
+	//地图中添加地图操作ToolBar插件
+    map.plugin(["AMap.ToolBar"], function() {
+        toolBar = new AMap.ToolBar({locationMarker: customMarker}); //设置地位标记为自定义标记
+        map.addControl(toolBar);
+    });
+    
 	if(location.href.indexOf('&guide=1')!==-1){
 		map.setStatus({scrollWheel:false})
 	}
@@ -16,7 +30,7 @@ $(function() {
 			timeout: 10000, //超过10秒后停止定位，默认：无穷大
 			buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
 			zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-//			showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
+			showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
 			buttonPosition: 'RB'
 		});
 		map.addControl(geolocation);
@@ -25,8 +39,14 @@ $(function() {
 		AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
 	});
 
+    
+	
 	//解析定位结果
 	function onComplete(data) {
+		var curPosition=[];
+		curPosition.push(data.position.getLng());
+		curPosition.push(data.position.getLat());
+
 		//地图上车辆Marker地理位置信息
 		var bikes = [{
 			"name": "尚东.数字山谷A区",
@@ -89,13 +109,47 @@ $(function() {
 			"center": "116.289306,40.041622",
 			"type": 1,
 			"subDistricts": []
-		}];
+		}
+		, {
+			"name": "好日子生活超市",
+			"center": "116.375636,40.091632",
+			"type": 1,
+			"subDistricts": []
+		}
+		, {
+			"name": "重庆小面",
+			"center": "116.375132,40.091817",
+			"type": 1,
+			"subDistricts": []
+		}
+		, {
+			"name": "美廉超市",
+			"center": "116.375684,40.091164",
+			"type": 1,
+			"subDistricts": []
+		}/*, {
+			"name": "当前位置",
+			"center": curPosition.join(','),
+			"type": 1,
+			"subDistricts": []
+		}*/];
+		javascript:toolBar.doLocation();
 		getBikes();
 		$('.index_refresh').click(getBikes);
 		map.setFitView();
-		$('.index_thumbnail').on('click',function(){
-			alert(1);
-		})
+		
+		
+	    //事件回调函数
+	    var callBackFn = function(e) {
+//	    	[e.lnglat.getLng(), e.lnglat.getLat()]
+	    	customMarker.setPosition(map.getCenter());
+	    };
+	    map.on('touchmove', callBackFn);
+	    //移除地图的click事件的监听
+	    function removeListener() {
+	        map.off('touchmove', callBackFn);
+	    }
+	    
 		//将获得的车辆信息添加到地图上
 		function getBikes(){
 			var markers=[];
@@ -107,7 +161,7 @@ $(function() {
 			            size : new AMap.Size(35,39.5)
 			    	});
 					var marker = new AMap.Marker({
-						icon:icon,//24px*24px
+						icon:icon,
 						position: bikes[i].center.split(','),
 						offset : new AMap.Pixel(-17.5,-19.75),
 						title: bikes[i].name,
@@ -115,6 +169,14 @@ $(function() {
 					});
 					marker.on('click',function(){
 						javascript:openInfo(index);
+						$('.index_guide').show();
+						//步行导航
+					    var walking = new AMap.Walking({
+					        map: map
+					    }); 
+					    //根据起终点坐标规划步行路线
+					    walking.search(curPosition,bikes[index].center.split(','));
+					    
 					})
 					markers.push(marker);
 				})(i);				
@@ -127,8 +189,8 @@ $(function() {
 	        var title = '';
 	        var content = [];
 	    	content.push(
-	    		'<div style="position:relative;top:-1.5625rem;width:3rem;height: 2.15625rem;border-radius: 2.5px;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);">'+
-				'<div style="z-index:2;position:absolute;left:0;top:0;width:3rem;height: 2.15625rem;'+
+	    		'<div style="position:relative;top:0;width:3rem;height: 2.15625rem;border-radius: 2.5px;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);">'+
+				'<div class="index_thumbnail" style="z-index:2;position:absolute;left:0;top:0;width:3rem;height: 2.15625rem;'+
 				'background:url(images/index_thumbnail.png) no-repeat #fff 0.125rem 0.125rem;'+
 				'background-size:2.75rem 1.9375rem;"></div>'+
 				'<span style="display:block;background:#fff;position:absolute;bottom:-0.15rem;left:50%;margin-left:-0.15rem;width:0.3125rem;height:0.3125rem;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);transform: rotate(-45deg);"></span></div>'
@@ -139,11 +201,14 @@ $(function() {
 		    });
 	        infoWindow.open(map, bikes[i].center.split(','));
 	        
+
+	        
 	        //构建自定义信息窗体
 		    function createInfoWindow(title, content) {
 		        var info = document.createElement("div");
-		        info.className = "index_thumbnail";
-				info.innerHTML = content;
+		        info.className = "info";
+				info.style.paddingBottom = '1.5625rem';
+				info.innerHTML = content
 		        return info;
 		    }
 		    //关闭信息窗体
@@ -158,32 +223,31 @@ $(function() {
 
 	//解析定位错误信息
 	function onError(data) {
-		document.getElementById('tip').innerHTML = '请在系统的设置-隐私-定位服务界面允许joybike确定您的位置。';
+		/*var str = '<p>定位失败</p>';
+	    str += '<p>错误信息：'
+	    switch(data.info) {
+	        case 'PERMISSION_DENIED':
+	            str += '浏览器阻止了定位操作';
+	            break;
+	        case 'POSITION_UNAVAILBLE':
+	            str += '无法获得当前位置';
+	            break;
+	        case 'TIMEOUT':
+	            str += '定位超时';
+	            break;
+	        default:
+	            str += '未知错误';
+	            break;
+	    }
+	    str += '</p>';
+	    result.innerHTML = str;*/
 	}
 	
 
-	
-	
-	
 
-
-
-
-
-
-	//扫描二维码点击图片切换
-	var index_onOff=false;
-	$('.index_scan').on('click',function(){
-		if(index_onOff){
-			$(this).children('img').attr('src','images/index_scan_hover.png');
-			index_onOff=true;
-		}else{
-			$(this).children('img').attr('src','images/index_scan.png');
-			index_onOff=false;
-		}
-	});
 	//去除高德图标链接
 	$('.amap-logo').attr('href','javascript:;');
 	$('.amap-logo').attr('target','_self');
+	
 
 });
