@@ -136,7 +136,7 @@ $(function() {
 			"type": 1,
 			"subDistricts": []
 		}*/];
-		javascript:toolBar.doLocation();
+		toolBar.doLocation();
 		getBikes();
 		$('.index_refresh').click(getBikes);
 		map.setFitView();
@@ -181,7 +181,7 @@ $(function() {
 						map: map
 					});
 					marker.on('click',function(){
-						javascript:openInfo(index);
+						openInfo(index);
 						$('.index_guide').show();
 						map.on('click',function(){
 							$('.index_guide').hide();
@@ -192,18 +192,12 @@ $(function() {
 					markers.push(marker);
 				})(i);				
 			};
-			
-			
-			
-			
-			
-			
 			function walkRoutes(index){
+//				walking.clear();
+//				walking.setMap(null);
+				//map.clearMap();
 				//步行导航
-			    var walking = new AMap.Walking({
-			        map: map/*,
-			        panel: "result"*/
-			    }); 
+			    var walking = new AMap.Walking({}); 
 			    //根据起终点坐标规划步行路线
 			    walking.search(curPosition,bikes[index].center.split(','),function(status, result){
 			    	var routeS = result.routes;
@@ -268,9 +262,9 @@ $(function() {
 					    var extra_line1 = new AMap.Polyline({
 					        map: map,
 					        path: extra_path1,
-					        strokeColor: "#9400D3",
-					        strokeOpacity: 0.7,
-					        strokeWeight: 4,
+					        strokeColor: "#5fab15",
+					        strokeOpacity: 0.8,
+					        strokeWeight: 7,
 					        strokeStyle: "dashed",
 					        strokeDasharray: [10, 5]
 					    });
@@ -282,23 +276,40 @@ $(function() {
 					    var extra_line2 = new AMap.Polyline({
 					        map: map,
 					        path: extra_path2,
-					        strokeColor: "#9400D3",
-					        strokeOpacity: 0.7,
-					        strokeWeight: 4,
+					        strokeColor: "#5fab15",
+					        strokeOpacity: 0.8,
+					        strokeWeight: 7,
 					        strokeStyle: "dashed",
+					        strokeBorder:"1px solid #559814",
 					        strokeDasharray: [10, 5]
 					    });
-					
+					 	var extra_path3 = new Array();
 					    for(var s=0; s<steps.length; s++) {
-					        var drawpath = steps[s].path;
-					        var polyline = new AMap.Polyline({
-					            map: map,
-					            path: drawpath,
-					            strokeColor: "#9400D3",
-					            strokeOpacity: 0.7,
-					            strokeWeight: 4
-					        });
+					    	var array1 = steps[s].path.toString().split(',');
+					    	for(var i=1;i<=steps[s].path.length;i*2){
+					    		var l = array1[i-1]+","+array1[i];
+					    		extra_path3.push(l.toString());
+//					    		console.log(array1[i-1]+","+array1[i]);
+					    	}
 					    }
+					    alert(extra_path3.length);
+					    var extra_line3 = new AMap.Polyline({
+					            map: map,
+					            path: extra_path3,
+					            strokeColor: "#f00",
+					            strokeOpacity: 0.8,
+					            strokeWeight: 7
+					        });
+//					    for(var s=0; s<steps.length; s++) {
+//					        var drawpath = steps[s].path;
+//					        var polyline = new AMap.Polyline({
+//					            map: map,
+//					            path: drawpath,
+//					            strokeColor: "#f00",
+//					            strokeOpacity: 0.8,
+//					            strokeWeight: 7
+//					        });
+//					    }
 					    map.setFitView()
 					};
 					
