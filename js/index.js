@@ -14,7 +14,8 @@ $(function() {
 	var map = new AMap.Map('container', {
 		resizeEnable: true,
 		dragEnable: true
-	});	
+	});
+	
 	//地图中添加地图操作ToolBar插件
     map.plugin(["AMap.ToolBar"], function() {
         toolBar = new AMap.ToolBar({locationMarker: customMarker}); //设置地位标记为自定义标记
@@ -30,6 +31,7 @@ $(function() {
 			timeout: 10000, //超过10秒后停止定位，默认：无穷大
 			buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
 			zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+			showMarker: false,	 //定位成功后在定位到的位置显示点标记，默认：true
 			showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
 			buttonPosition: 'RB'
 		});
@@ -43,10 +45,11 @@ $(function() {
 	
 	//解析定位结果
 	function onComplete(data) {
+		
 		var curPosition=[];
 		curPosition.push(data.position.getLng());
 		curPosition.push(data.position.getLat());
-
+		addIcon(curPosition);
 		//地图上车辆Marker地理位置信息
 		var bikes = [{
 			"name": "尚东.数字山谷A区",
@@ -110,7 +113,7 @@ $(function() {
 			"type": 1,
 			"subDistricts": []
 		}
-		, {
+		/*, {
 			"name": "好日子生活超市",
 			"center": "116.375636,40.091632",
 			"type": 1,
@@ -127,7 +130,7 @@ $(function() {
 			"center": "116.375684,40.091164",
 			"type": 1,
 			"subDistricts": []
-		}/*, {
+		}, {
 			"name": "当前位置",
 			"center": curPosition.join(','),
 			"type": 1,
@@ -138,14 +141,24 @@ $(function() {
 		$('.index_refresh').click(getBikes);
 		map.setFitView();
 		
-		
-	    //事件回调函数
+		//添加点标记，并使用自己的icon
+		function addIcon(pos){				
+		    new AMap.Marker({
+		        map: map,
+				position: pos,
+		        icon: new AMap.Icon({            
+		            size: new AMap.Size(70, 79),  //图标大小
+		            image: "images/index_point.png",
+		            imageOffset: new AMap.Pixel(-8, 14)
+		        })        
+		    });
+		}
+	    //地图中心点指针，事件回调函数
 	    var callBackFn = function(e) {
-//	    	[e.lnglat.getLng(), e.lnglat.getLat()]
 	    	customMarker.setPosition(map.getCenter());
 	    };
 	    map.on('touchmove', callBackFn);
-	    //移除地图的click事件的监听
+	    //移除地图的touchmove事件的监听
 	    function removeListener() {
 	        map.off('touchmove', callBackFn);
 	    }
@@ -170,17 +183,149 @@ $(function() {
 					marker.on('click',function(){
 						javascript:openInfo(index);
 						$('.index_guide').show();
-						//步行导航
-					    var walking = new AMap.Walking({
-					        map: map
-					    }); 
-					    //根据起终点坐标规划步行路线
-					    walking.search(curPosition,bikes[index].center.split(','));
+						map.on('click',function(){
+							$('.index_guide').hide();
+						})
+						walkRoutes(index);
 					    
 					})
 					markers.push(marker);
 				})(i);				
-			}		
+			};
+			
+			
+			
+			
+			
+			
+			function walkRoutes(index){
+				//步行导航
+			    var walking = new AMap.Walking({
+			        map: map/*,
+			        panel: "result"*/
+			    }); 
+			    //根据起终点坐标规划步行路线
+			    walking.search(curPosition,bikes[index].center.split(','),function(status, result){
+			    	var routeS = result.routes;
+			    	if (routeS.length <= 0) {
+			            console.log('不可行');
+			        }else{
+			            var route_text="";
+			            for(var v =0; v< routeS.length;v++){
+			                //步行导航路段数
+			                var  steps = routeS[v].steps;
+			                var route_count = steps.length;
+			                //步行距离（米）
+			                var distance = routeS[v].distance;
+			                //拼接输出html
+			                for(var i=0 ;i< steps.length;i++) {
+			                    route_text += "<tr><td align=\"left\" onMouseover=\"walkingDrawSeg('" + i + "')\">" + i +"." +steps[i].instruction  + "</td></tr>";
+			                }
+			            }
+			            //输出步行路线指示
+			            route_text = "<table cellspacing=\"5 px\" ><tr><td style=\"background:#e1e1e1;\">路线</td></tr><tr><td></td></tr>" + route_text + "<tr><td></td></tr></table>";
+			            document.getElementById("result").innerHTML = route_text;
+			            walkingDrawLine(index);
+			        }
+			    	
+			    	//绘制步行导航路线
+					function walkingDrawLine(index) {
+					    //起点、终点图标
+					    var sicon = new AMap.Icon({
+					        image: "images/tripdetail_start.png",
+					        size:new AMap.Size(44,44),
+					        imageOffset: new AMap.Pixel(-334, -180)
+					    });
+					    var startmarker = new AMap.Marker({
+					        icon : sicon, //复杂图标
+					        visible : true,
+					        position : curPosition,
+					        map:map,
+					        offset : {
+					            x : -16,
+					            y : -40
+					        }
+					    });
+					    var eicon = new AMap.Icon({
+					        image: "images/tripdetail_end.png",
+					        size:new AMap.Size(44,44),
+					        imageOffset: new AMap.Pixel(-334, -134)
+					    });
+					    var endmarker = new AMap.Marker({
+					        icon : eicon, //复杂图标
+					        visible : true,
+					        position : bikes[index].center.split(','),
+					        map:map,
+					        offset : {
+					            x : -16,
+					            y : -40
+					        }
+					    });
+					    //起点到路线的起点 路线的终点到终点 绘制无道路部分
+					    var extra_path1 = new Array();
+					    extra_path1.push(curPosition);
+					    extra_path1.push(steps[0].path[0]);
+					    var extra_line1 = new AMap.Polyline({
+					        map: map,
+					        path: extra_path1,
+					        strokeColor: "#9400D3",
+					        strokeOpacity: 0.7,
+					        strokeWeight: 4,
+					        strokeStyle: "dashed",
+					        strokeDasharray: [10, 5]
+					    });
+					
+					    var extra_path2 = new Array();
+					    var path_xy = steps[(steps.length-1)].path;
+					    extra_path2.push(bikes[index].center.split(','));
+					    extra_path2.push(path_xy[(path_xy.length-1)]);
+					    var extra_line2 = new AMap.Polyline({
+					        map: map,
+					        path: extra_path2,
+					        strokeColor: "#9400D3",
+					        strokeOpacity: 0.7,
+					        strokeWeight: 4,
+					        strokeStyle: "dashed",
+					        strokeDasharray: [10, 5]
+					    });
+					
+					    for(var s=0; s<steps.length; s++) {
+					        var drawpath = steps[s].path;
+					        var polyline = new AMap.Polyline({
+					            map: map,
+					            path: drawpath,
+					            strokeColor: "#9400D3",
+					            strokeOpacity: 0.7,
+					            strokeWeight: 4
+					        });
+					    }
+					    map.setFitView()
+					};
+					
+			    	/*console.log(result);
+			    	console.log(result.routes[0].steps[0]);
+			    	console.log(result.routes[0].steps[0].path);
+			    	var path=result.routes[0].steps[0].path;
+			    	path.unshift(result.routes[0].steps[0].start_location);
+			    	path.push(result.routes[0].steps[0].end_location);
+			    	console.log(path);
+			    	var lineArr = [
+			    		curPosition,
+			    		bikes[index].center.split(',')
+					];
+			    	var polyline = new AMap.Polyline({
+						path: path, //设置线覆盖物路径        
+						strokeColor: "#80cb38", //线颜色        
+						strokeOpacity: 2,       //线透明度        
+						strokeWeight: 5,        //线宽        
+						strokeStyle: "solid",   //线样式        
+						strokeDasharray: [10, 5] //补充线样式    
+					});
+					polyline.setMap(map);*/
+					
+			    });
+			}
+			
 		}
 	
 		//在指定位置打开信息窗体
@@ -200,7 +345,6 @@ $(function() {
 		        content: createInfoWindow(title, content.join("<br/>")),
 		    });
 	        infoWindow.open(map, bikes[i].center.split(','));
-	        
 
 	        
 	        //构建自定义信息窗体
@@ -209,6 +353,18 @@ $(function() {
 		        info.className = "info";
 				info.style.paddingBottom = '1.5625rem';
 				info.innerHTML = content
+				info.onclick = function(){
+					$('#mask').show();
+					$('.index_bikeInfo').show();
+					$('#mask').on('click',function(){
+						$('.index_bikeInfo').hide();
+						$(this).hide();
+					});
+					$('.index_feedback').on('click',function(){
+						$('.index_bikeInfo').hide();
+						$('#mask').hide();
+					})
+				};
 		        return info;
 		    }
 		    //关闭信息窗体
