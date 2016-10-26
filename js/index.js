@@ -45,11 +45,42 @@ $(function() {
 	var extra_line1,extra_line2,extra_line3;
 	//解析定位结果
 	function onComplete(data) {
-		
+		var lng=data.position.getLng();
+		var lat=data.position.getLat();
 		var curPosition=[];
-		curPosition.push(data.position.getLng());
-		curPosition.push(data.position.getLat());
+		curPosition.push(lng);
+		curPosition.push(lat);
 		addIcon(curPosition);
+		
+		$.ajax({
+			type: "get",
+			url: "http://api.joybike.com.cn/user/getValidateCode",
+			contentType: "application/json",
+			dataType: "json",
+			data: {
+//				'longitude': lng,
+				'mobile': '18201341039'
+			},
+			headers: {
+				"Accept": 'application/json',
+				"Authentication":"B9A45EAC2C54BF5F8379C3D3A352A052"
+			},
+			beforeSend:function(xhr){
+				xhr.setRequestHeader("Authentication","B9A45EAC2C54BF5F8379C3D3A352A052");
+			},
+			success: function(data,xmlHttpRequest,status){
+				alert(1);
+				console.log(data);
+				console.log(data.data);
+				console.log(data.success);
+				console.log(status);
+			},
+			error:function(data,status){
+				alert(2);
+				alert(data+"***"+status);
+			}
+		});
+		
 		//地图上车辆Marker地理位置信息
 		var bikes = [{
 			"name": "尚东.数字山谷A区",
@@ -193,9 +224,6 @@ $(function() {
 				})(i);				
 			};
 			function walkRoutes(index){
-//				walking.clear();
-//				walking.setMap(null);
-				//map.clearMap();
 				//步行导航
 			    var walking = new AMap.Walking({}); 
 			    //根据起终点坐标规划步行路线
@@ -300,7 +328,7 @@ $(function() {
 					    	var array1 = steps[s].path.toString().split(',');
 					    	for(var i=1;i<array1.length;){
 					    		var arr = [parseFloat(array1[i-1]), parseFloat(array1[i])];
-					    		i = i*2+1;
+					    		i = i+2;
 					    		extra_path3.push(arr);
 					    	}
 					    }
@@ -313,16 +341,16 @@ $(function() {
 					     });
 					        
 					        
-//					    for(var s=0; s<steps.length; s++) {
-//					        var drawpath = steps[s].path;
-//					        var polyline = new AMap.Polyline({
-//					            map: map,
-//					            path: drawpath,
-//					            strokeColor: "#f00",
-//					            strokeOpacity: 0.8,
-//					            strokeWeight: 7
-//					        });
-//					    }
+					    /*for(var s=0; s<steps.length; s++) {
+					        var drawpath = steps[s].path;
+					        var polyline = new AMap.Polyline({
+					            map: map,
+					            path: drawpath,
+					            strokeColor: "#f00",
+					            strokeOpacity: 0.8,
+					            strokeWeight: 7
+					        });
+					    }*/
 					    map.setFitView()
 					};
 					
