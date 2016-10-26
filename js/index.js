@@ -42,7 +42,7 @@ $(function() {
 	});
 
     
-	
+	var extra_line1,extra_line2,extra_line3;
 	//解析定位结果
 	function onComplete(data) {
 		
@@ -224,6 +224,15 @@ $(function() {
 			    	
 			    	//绘制步行导航路线
 					function walkingDrawLine(index) {
+						if(extra_line1!=null){
+							extra_line1.setMap(null);
+						}
+						if(extra_line2!=null){
+							extra_line2.setMap(null);
+						}
+						if(extra_line3!=null){
+							extra_line3.setMap(null);
+						}
 					    //起点、终点图标
 					    var sicon = new AMap.Icon({
 					        image: "images/tripdetail_start.png",
@@ -259,7 +268,7 @@ $(function() {
 					    var extra_path1 = new Array();
 					    extra_path1.push(curPosition);
 					    extra_path1.push(steps[0].path[0]);
-					    var extra_line1 = new AMap.Polyline({
+					    extra_line1 = new AMap.Polyline({
 					        map: map,
 					        path: extra_path1,
 					        strokeColor: "#5fab15",
@@ -274,7 +283,7 @@ $(function() {
 					    extra_path2.push(bikes[index].center.split(','));
 					    extra_path2.push(path_xy[(path_xy.length-1)]);
 					    console.log("2~"+extra_path2.toString());
-					    var extra_line2 = new AMap.Polyline({
+					    extra_line2 = new AMap.Polyline({
 					        map: map,
 					        path: extra_path2,
 					        strokeColor: "#5fab15",
