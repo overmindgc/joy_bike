@@ -273,6 +273,7 @@ $(function() {
 					    var path_xy = steps[(steps.length-1)].path;
 					    extra_path2.push(bikes[index].center.split(','));
 					    extra_path2.push(path_xy[(path_xy.length-1)]);
+					    console.log("2~"+extra_path2.toString());
 					    var extra_line2 = new AMap.Polyline({
 					        map: map,
 					        path: extra_path2,
@@ -283,23 +284,26 @@ $(function() {
 					        strokeBorder:"1px solid #559814",
 					        strokeDasharray: [10, 5]
 					    });
+					    
+					    
 					 	var extra_path3 = new Array();
 					    for(var s=0; s<steps.length; s++) {
 					    	var array1 = steps[s].path.toString().split(',');
-					    	for(var i=1;i<=steps[s].path.length;i*2){
-					    		var l = array1[i-1]+","+array1[i];
-					    		extra_path3.push(l.toString());
-//					    		console.log(array1[i-1]+","+array1[i]);
+					    	for(var i=1;i<array1.length;){
+					    		var arr = [parseFloat(array1[i-1]), parseFloat(array1[i])];
+					    		i = i*2+1;
+					    		extra_path3.push(arr);
 					    	}
 					    }
-					    alert(extra_path3.length);
-					    var extra_line3 = new AMap.Polyline({
+					    extra_line3 = new AMap.Polyline({
 					            map: map,
 					            path: extra_path3,
-					            strokeColor: "#f00",
+					            strokeColor: "#5fab15",
 					            strokeOpacity: 0.8,
 					            strokeWeight: 7
-					        });
+					     });
+					        
+					        
 //					    for(var s=0; s<steps.length; s++) {
 //					        var drawpath = steps[s].path;
 //					        var polyline = new AMap.Polyline({
