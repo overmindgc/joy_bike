@@ -4,6 +4,9 @@ body,html{
 	height: 100%;
 	margin: 0 auto;
 }
+input{
+	outline: none;
+}
 .bgc-fff {background-color: #fff; }
 .fc-fff {color: #fff;}
 .border-box{
