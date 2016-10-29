@@ -1,0 +1,69 @@
+html, body {
+  height: 100%;
+  background: #f0f0f0; }
+
+.uploadBikePicArea {
+  width: 100%;
+  height: 14.1875rem;
+  background: url("../images/uploadBikePic.png") no-repeat;
+  background-size: cover;
+  padding-top: 5.9375rem;
+  box-sizing: border-box; }
+  .uploadBikePicArea .uploadWord {
+    width: 9.6875rem;
+    height: 2.53125rem;
+    margin: 0 auto;
+    border: 0.0625rem solid #ed6d2b;
+    line-height: 2.53125rem;
+    background: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    color: #ed6d2b; }
+
+.bikePositionDesc {
+  width: 100%;
+  padding: 0.9375rem;
+  font-size: 0.8125rem;
+  color: #999;
+  line-height: 1.1875rem;
+  background: #fff;
+  box-sizing: border-box; }
+
+h3 {
+  width: 100%;
+  padding-left: 0.9375rem;
+  box-sizing: border-box;
+  margin: 0.625rem 0;
+  font-size: 0.8125rem;
+  color: #999;
+  line-height: 1.1875rem; }
+
+#description {
+  width: 21.5625rem;
+  height: 6.59375rem;
+  padding: 0.9375rem;
+  box-sizing: border-box;
+  resize: none;
+  margin: 0 auto;
+  display: block;
+  border: 0.03125rem solid #C8C8C8;
+  color: #ccc; }
+
+.auth_btnWrap {
+  margin: 2.65625rem 0;
+  padding: 0 0.9375rem; }
+  .auth_btnWrap a {
+    display: block;
+    border-radius: 0.3125rem;
+    height: 2.8125rem;
+    margin: 0 auto;
+    background: #ccc;
+    line-height: 2.8125rem;
+    color: #fff;
+    text-align: center;
+    font-size: 1.1875rem; }
+  .auth_btnWrap a.valid {
+    background: url("../images/auth/common_btn_n.9.png") no-repeat;
+    background-size: cover; }
+  .auth_btnWrap a.valid:active {
+    background: url("../images/auth/common_btn_y.9.png") no-repeat;
+    background-size: cover; }
