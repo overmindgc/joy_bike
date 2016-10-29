@@ -7,6 +7,9 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .amap-geolocation-con:hover .amap-geo{background: url(../images/index_loc.png) rgba(0,0,0,0.3) no-repeat;background-size:2.125rem;}.amap-toolbar{display: none;}
 .amap-copyright{display: none!important;}
 .amap-icon img{width:2.1875rem;height:2.46875rem;}
+.amap-lib-marker-from, .amap-lib-marker-to{width: 1.5rem;height:1.8125rem;left:-0.15rem;top:0.5rem;background: none;}
+/*.amap-lib-marker-from{background: url(../images/tripdetail_start.png) no-repeat;background-size: 100%;}
+.amap-lib-marker-to{background: url(../images/tripdetail_end.png) no-repeat;background-size: 100%;}*/
 /*index css*/
 .index_header{line-height:2.75rem;background: url(../images/index_logo.png) no-repeat center #2a2a2a;background-size: 5.25rem 1.3125rem;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;padding:0 0.9375rem;}
 .index_header a{width:1.625rem;}
@@ -20,8 +23,8 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .index_refresh img{width:2.125rem;height:2.125rem;}
 .index_tip{right:0.9375rem;bottom:0.125rem;}
 .index_tip img{width:1.875rem;height:1.875rem;}
-.index_guide{position: absolute;left:0;top:2.75rem;width:100%;background:#fff;}
-.index_guide ul li.index_bikePos{line-height:2.71875rem;padding-left: 2.5rem;background: url(../images/index_bikePos.png) no-repeat 1rem 0.8125rem;background-size: 0.875rem 1.15625rem;}
+.index_guide{position: absolute;left:0;top:2.75rem;width:100%;background:#fff;z-index: 999;}
+.index_guide ul li.index_bikePos{line-height:2.71875rem;padding-left: 2.5rem;background: url(../images/index_bikePos.png) no-repeat #fff 1rem 0.8125rem;background-size: 0.875rem 1.15625rem;}
 .index_guide dt{padding-top:0.84375rem;}
 .index_guide ol{text-align: center;padding-bottom:1.125rem;}
 .index_guide ol span{font-size: 1.5rem;color: #ed6d2b;}
@@ -33,14 +36,15 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .index_bikeNum{padding-top:0.78125rem;padding-bottom: 0.96875rem;}
 .index_booking{background:#eaeaea;line-height: 2.75rem;}
 .index_booking span{margin-right:0.9375rem;}
-.index_findBike{border-left:1px solid #eaeaea;width:5.4375rem;height:7.15rem;background: url(../images/index_findBike.png) no-repeat 1.875rem 1.8125rem;background-size: 1.5625rem 1.8125rem;}
+.index_bell{z-index: 999;}
+.index_findBike{border-left:1px solid #eaeaea;width:5.4375rem;height:7.15rem;background: url(../images/index_findBike.png) no-repeat #fff 1.875rem 1.8125rem;background-size: 1.5625rem 1.8125rem;}
 .index_findBike span{display:inline-block;margin:4.1875rem 0 0 1.5625rem;}
 .index_cancel{border-left: 1px solid #fff;line-height: 2.937rem;color: #fff;text-align: center;}
 .index_cancel:hover{background:#da530e;}
 .index_popup{width:84%;border-radius:5px;position:absolute;left:50%;top:30%;margin-left:-42%;z-index:99999;text-align: center;padding-bottom: 9.34375rem;background: url(../images/index_popBg.png) no-repeat #fff bottom;background-size:100% 9.34375rem;}
 .index_popup dd{padding:0.9375rem;line-height: 1.25rem;text-align: left;}
 .index_lock{background: url(../images/index_lockTip.png) no-repeat #fff bottom;background-size:100% 9.34375rem;}
-.index_bikeInfo{width: 84%;background:#fff;border-radius:5px;position:absolute;left:50%;top:13%;margin-left:-42%;z-index:99999;}
+.index_bikeInfo{z-index: 999999;width: 84%;background:#fff;border-radius:5px;position:absolute;left:50%;top:13%;margin-left:-42%;z-index:99999;}
 .index_bikeInfo img{width:100%;}
 .index_bikeInfo ul{padding:0.9375rem;line-height: 1.25rem;}
 .index_bikeInfo ul li:nth-child(1){padding-bottom: 0.375rem;}
@@ -51,37 +55,12 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .trans-v{-webkit-transform: translate(0,-50%);transform: translate(0,-50%);}
 .trans-vc{-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);}
 .border-box{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}
-.charging-tip-msg{
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	width: 84.266667%;
-	padding: 2rem 1.40625rem 1.34375rem;
-	border-radius: 5px;
-	z-index:99999;
- }
-.charging-tip-btns{
-	margin-top: 1.875rem;
-	text-align: center;
-}
-.charging-tip-btns span{
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    width: 48.0662983%;
-    height: 2.5rem;
-    line-height: 2.5rem;
-    border-radius: 3px;
-}
-.charging-tip-cancel{
-	color: #ccc;
-	background-color: #eee;
-	border: 1px solid #eee;
-}
+.charging-tip-msg{position: fixed;top: 50%;left: 50%;width: 84.266667%;padding: 2rem 1.40625rem 1.34375rem;border-radius: 5px;z-index:99999;}
+.charging-tip-btns{margin-top: 1.875rem;text-align: center;}
+.charging-tip-btns span{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;width: 48.0662983%;height: 2.5rem;line-height: 2.5rem;border-radius: 3px;}
+.charging-tip-cancel{color: #ccc;background-color: #eee;border: 1px solid #eee;}
 .charging-tip-cancel:hover{background-color: #d3d3d3;color:#999;border: 1px solid #d3d3d3;}
-.charging-tip-confirm{
-	color: #fff;
-	background-color: #ED6D2B;
-}
+.charging-tip-confirm{color: #fff;background-color: #ED6D2B;}
 .charging-tip-confirm:hover{background-color: #da530e;}
 /*paysuccess css*/
 .paySuc{padding:1.9375rem 0;background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAEAgMAAAAsf40aAAAADFBMVEX////x8fH9/f319fXyfgIsAAAAHElEQVQI12NgYNj6gIGBKTSCgYE5NIaBgTE0BAAniwOjxPBgUgAAAABJRU5ErkJggg==') repeat-x bottom;background-size: 0.46875rem 0.125rem;}

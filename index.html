@@ -11,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="css/common.css" />	
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
-	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=8255a46f698ce402928806547d2baa37"></script>
+	<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=8255a46f698ce402928806547d2baa37&plugin=AMap.Walking"></script>
 	<!--<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>-->
 	<script type="text/javascript" src="js/index.js"></script>
 	<body>
@@ -19,15 +19,16 @@
 			<a href="javascript:;" class="fl"><img src="images/index_info.png" /></a>
 			<a href="javascript:;" class="fr"><img src="images/index_search.png" /></a>
 		</header>
-		<div id="container"></div>
+		<div id="result" style="position: absolute;left:-1111111110px;top:0;z-index:9;background:#fff;"></div>
+		<div id="container" class="map" tabindex="0"></div>
 		<footer class="index_footer po-ab">
 			<a href="javascript:;" class="index_refresh po-ab"><img src="images/index_refresh.png" /></a>
 			<a href="javascript:;" class="index_scan"></a>
 			<a href="javascript:;" class="index_tip po-ab"><img src="images/index_tip.png" /></a>
 		</footer>
-		<nav class="index_guide bd-t">
+		<nav class="index_guide bd-t" style="display: none;">
 
-			<!--<ul>
+			<ul>
 				<li class="index_bikePos ft-32 fc-666 bd-b">林业大学北路</li>
 				<li class="bd-b fc-999">
 					<dl class="ft-26">
@@ -50,17 +51,17 @@
 						</dd>
 					</dl>
 				</li>
-
+<!--
 				<li class="index_using bgc-ed6d2b cl ft-26">
 					<div class="fl">正在用车 <b>26549548465</b></div>
 					<div class="fr">预计费用 <b>1元</b></div>
-				</li>
+				</li>-->
 			</ul>
 
-			<div class="dp-flex dp-box" style="height:10rem;">
-				<ul class="dp-f-1">
-					<li class="index_bikePos ft-32 fc-666 bd-b">林业大学北路</li>
-					<li class="bd-b fc-999">
+			<!--<div class="dp-flex dp-box" style="height:10rem;">
+				<ul class="index_orderList dp-f-1">
+					<li class="index_bikePos ft-32 fc-666 bd-b bgc-fff">林业大学北路</li>
+					<li class="bd-b fc-999 bgc-fff">
 						<dl class="ft-26">
 							<dt class="mg-l">自行车编号</dt>
 							<dd class="fc-666 ft-32 mg-l index_bikeNum">26549548465</dd>
@@ -70,7 +71,7 @@
 						<span class="ft-32 fc-ed6d2b mg-l">预约中</span>保留时间：12:00
 					</li>
 				</ul>
-				<ul>
+				<ul class="index_bell">
 					<li class="index_findBike">
 						<span class="ft-26 fc-999">寻车铃</span>
 					</li>
@@ -102,7 +103,7 @@
 		</div>-->
 		
 		<!--查看预约车辆-->
-		<!--<div class="index_bikeInfo">
+		<div class="index_bikeInfo" style="display: none;">
 			<div><img src="images/index_bikeInfo.png"/></div>
 			<ul class="ft-32 fc-666">
 				<li>车辆编号：<span class="fc-ed6d2b">26547387633</span></li>
@@ -112,7 +113,7 @@
 				<a href="javascript:;" class="dp-f-1">有帮助</a>
 				<a href="javascript:;" class="dp-f-1">没有用</a>
 			</div>
-		</div>-->
+		</div>
 		
 		<!--计费异常弹窗-->
 

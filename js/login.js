@@ -24,7 +24,7 @@ $(function(){
 			var t=this;
 			$('.login_validCode').tap(function(){
 				if($(this).hasClass('valid')){//请求验证码
-					if($(this).attr('data-status')!='unlock'){
+					if($(this).attr('data-status')!='lock'){
 						$(".login_validCode").attr("data-status", "lock");
 						t.getCode();
 						t.countDown(60);
@@ -36,19 +36,34 @@ $(function(){
 			
 		},
 		countDown:function(t){			
-			$(".login_validCode").text(t + "秒后重新获取");
+			$(".login_validCode").text(t + "秒后重新获取").css('font-size','0.5rem');
 			var s = setInterval(function () {
 				t--;
 				$(".login_validCode").text(t + "秒后重新获取");
 				if (t == 0) {
 					clearInterval(s);
-					$(".login_validCode").text("重新发送");
+					$(".login_validCode").text("重新发送").css('font-size','1rem');
 					$(".login_validCode").attr("data-status", "unlock");
 				}
 			},1000);			
 		},
 		getCode:function(){//checkIfvalid
-			
+			var url = 'http://api.joybike.com.cn/user/getValidateCode';
+			var data ={mobile:$.trim($('.login_username').val())};
+//			$.ajax({
+//				url:url,
+//				data:data,
+//				dataType:'jsonp',
+//				jsonp:"",
+//				success:function(res){
+//					if(res.success){
+//						
+//					}
+//				},
+//				error:function(){
+//					
+//				}
+//			});
 		},
 		checkIfValid:function(){//检测是否有效
 			var t=this;
@@ -59,18 +74,37 @@ $(function(){
 			
 		},
 		loginBtnClick:function(){
+			var t=this;
 			var phoneNumber=""; 
 			var code = '';
 			var phoneReg = /^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
-				phoneNumber= $('.login_username').val();
-				code = $('.login_passCode').val();
-				if(phoneReg.test(phoneNumber)&&code!=''&&$('.ev_checkState').hasClass('chosed')){
+				phoneNumber= $.trim($('.login_username').val());
+				code = $.trim($('.login_passCode').val());
+				if(phoneReg.test(phoneNumber)&&code!=''&&code.length==4&&$('.ev_checkState').hasClass('chosed')){
 					$('.ev_loginBtn').addClass('login_permit').tap(function(){
-						
+						t.login();
 					});
 				}else{
 					$('.ev_loginBtn').removeClass('login_permit').off('tap');
 				}
+		},
+		login:function(){
+			var t=this;
+			var url ='http://api.joybike.com.cn/user/validate';
+			var data={mobile:$.trim($('.login_username').val()),validateCode:$.trim($('.login_passCode').val())}
+			$.ajax({
+				url:url,
+				data:data,
+				dataType:'jsonp',
+				jsonp:"",
+				success:function(res){
+					if(res.success){//请求成功，跳转
+						window.location.href="";
+					}else{
+						popup(res.errorMessage);
+					}
+				}
+			});
 		},
 		checkBoxState:function(){
 			var t=this;

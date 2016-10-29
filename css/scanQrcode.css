@@ -182,11 +182,11 @@ header.login_header {
   border: none;
   outline: none;
   opacity: 0;
-  letter-spacing: 2.5rem;
+  letter-spacing: 1.8rem;
 }
 .numberInput .fake-box input {
   display: inline-block;
-  width: 2.3125rem;
+  width: 1.70rem;
   height: 4.3125rem;
   background: #514745;
   color: #fff;

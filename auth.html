@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="css/auth.css" />
 	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
 	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
-	<script src="js/auth.js"></script>
+	<script src="js/auth/auth.js"></script>
 	<body>
 		<header class="login_header">
 			<header><div class="common_back"></div>实名认证<a href="" class="auth_pass">暂不认证</a></header>				
@@ -29,10 +29,10 @@
 			<form action="">
 				<div class="auth_textWrap">
 					<p><input type="text"placeholder='请输入真实姓名' class="auth_trueName"/></p>
-					<p><input type="text" placeholder="请输入身份证号码"/></p>
+					<p><input type="tel" placeholder="请输入身份证号码" class='auth_cardno'/></p>
 				</div>
 				<div class="auth_btnWrap">
-					<a href="javascript:;" class='auth_btn valid'>认证</a>
+					<a href="javascript:;" class='auth_btn'>认证</a>
 				</div>
 				<p class="authTip">
 					<a href="">"无中华人民共和国居民身份证者，请点此进行认证"</a>
