@@ -12,6 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="css/feedBackReport.css" />
 	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
 	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
+	<script src="js/common.js"></script>
 	<script src="js/feedBackReport.js"></script>
 	<body>
 		<header class="login_header">
@@ -24,19 +25,19 @@
 			</div>
 			<div class="scanAfter" style='display:none;'>
 				<h3>车辆编号</h3>
-				<p class='bikeNumber'>1234567</p>
+				<p class='bikeNumber'></p>
 				<p class='reScan'>重新扫描</p>
 			</div>
 		</div>
 		<h2 class='reportTitle'>故障原因（单选项）</h2>
 		<form action="">
 			<div class="reportDetail">
-				<label class="chosed" for="re1">开不了锁<input type="radio" name='reason' val='' id='re1'/><em ></em></label>
-				<label for="re2">关不了锁<input type="radio" name='reason' val='' id='re2'/><em></em></label>
-				<label for="re3">举报违规停车<input type="radio" name='reason' val='' id='re3'/><em></em></label>
-				<label for="re4">车辆故障<input type="radio" name='reason' val='' id='re4'/><em></em></label>
-				<label for="re5">违规停车申诉<input type="radio" name='reason' val='' id='re5'/><em></em></label>
-				<label for="re6">其他<input type="radio" name='reason' val='' id='re6'/><em></em></label>
+				<label class="chosed" for="re1">开不了锁<input type="radio" name='reason' value='开不了锁' id='re1' checked/><em ></em></label>
+				<label for="re2">关不了锁<input type="radio" name='reason' value='关不了锁' id='re2'/><em></em></label>
+				<label for="re3">举报违规停车<input type="radio" name='reason' value='举报违规停车' id='re3'/><em></em></label>
+				<label for="re4">车辆故障<input type="radio" name='reason' value='车辆故障' id='re4'/><em></em></label>
+				<label for="re5">违规停车申诉<input type="radio" name='reason' value='违规停车申诉' id='re5'/><em></em></label>
+				<label for="re6">其他<input type="radio" name='reason' value='其他' id='re6'/><em></em></label>
 			</div>
 			<div class="otherReasons">				
 				<textarea name="" id="report_otherReasons" placeholder='请填写其他原因并上传图片'></textarea>

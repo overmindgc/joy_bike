@@ -52,7 +52,7 @@ html,body{
 	border-radius:0 0.3125rem 0.3125rem 0;
 }
 .login_info.login_info_phone{
-	border-radius:0 0.3125rem 0.3125rem 0;
+	/*border-radius:0 0.3125rem 0.3125rem 0;*/
 }
 .login_info_phone b{
 	width:0.875rem;

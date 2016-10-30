@@ -234,7 +234,8 @@ html, body {
   font-size: 0.8125rem;
 }
 #auth_deposit .auth_deposit_count.prepay_count {
-  height: 10.75rem;
+  height: auto;
+  padding-bottom:0.625rem;
 }
 #auth_deposit .deposit_way {
   height: 2.78125rem;

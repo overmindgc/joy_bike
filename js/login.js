@@ -55,6 +55,9 @@ $(function(){
 				data:data,
 				type:'get',
 				dataType:'json',
+				beforeSend:function(x){
+					x.setRequestHeader('SysVersion',"V1.0");					
+				},
 				success:function(res){
 					if(res.success){
 						
