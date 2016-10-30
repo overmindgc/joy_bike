@@ -3,7 +3,7 @@
  * */
 ;
 (function($) {
-    window.ROUT = 'http://api.joybike.com.cn/restful/';
+    window.ROUT = 'http://h5.joybike.com.cn/restful/';
     //是否微信浏览器
     function isWeixin() {
         var nav = navigator.userAgent;
