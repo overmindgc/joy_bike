@@ -341,6 +341,9 @@ html, body {
   background: #eee;
   margin-top: 0.5625rem;
 }
+.good_list .innerPriceWrap.active{
+	background:#bbbab3;
+}
 .good_list .innerPriceWrap p {
   margin: 0;
   height: 0.875rem;
