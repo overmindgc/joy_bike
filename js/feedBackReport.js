@@ -35,6 +35,7 @@ $(function(){
 						    $('.scanAfter').show();
 						    $('.bikeNumber').html(result);
 						    t.feedBack();
+						    
 						}
 					});
 				}
