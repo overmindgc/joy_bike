@@ -5,27 +5,33 @@ $(function(){
 	var cardno = $.trim($('.auth_cardno').val());//身份证号610922197401232578;
 	var isIDCard15=/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/; 
 	var isIDCard18=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/i;
-	$('input').on('blur propertyChange input',function(){
-		name =$.trim($('.auth_trueName').val());
-		cardno = $.trim($('.auth_cardno').val());
-		if(name!=""&&(isIDCard15.test(cardno)||isIDCard18.test(cardno))){
-			$('.auth_btn').addClass('valid').tap(function(){
-				$.ajax({
-					url:url,
-					data:{appkey:appkey,name:name,cardno:cardno},
-					dataType:'jsonp',
-					jsonp:"callback",
-					success:function(res){
-						if(res.success){
-							window.location.href ='';
-						}
-					}
-				});
-			});
-		}else{
-			$('.auth_btn').removeClass('valid').off('tap');
-		}
-	})
-	
+//	$('input').on('blur propertyChange input',function(){
+//		name =$.trim($('.auth_trueName').val());
+//		cardno = $.trim($('.auth_cardno').val());
+//		if(name!=""&&(isIDCard15.test(cardno)||isIDCard18.test(cardno))){
+//			$('.auth_btn').addClass('valid').tap(function(){
+//				$.ajax({
+//					url:url,
+//					data:{appkey:appkey,name:name,cardno:cardno},
+//					dataType:'jsonp',
+//					jsonp:"callback",
+//					success:function(res){
+//						if(res.success){
+//							window.location.href ='';
+//						}
+//					}
+//				});
+//			});
+//		}else{
+//			$('.auth_btn').removeClass('valid').off('tap');
+//		}
+//	})
+	$('.auth_btn').tap(function(){
+		$('#idauth').attr('src','http://api.id98.cn/api/idcard?appkey=d10a8e06284cf889deaf93ffb5d9c60a&name=%E9%82%93%E6%B0%B8%E6%9C%9B&cardno=610922197401232578');
+		$(window.frames["ReportIFrame"].document).load(function(){
+			alert($(window.frames["ReportIFrame"].document).contents().html());
+		});
+		
+	});
 });
 
