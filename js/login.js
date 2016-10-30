@@ -48,22 +48,24 @@ $(function(){
 			},1000);			
 		},
 		getCode:function(){//checkIfvalid
-			var url = 'http://api.joybike.com.cn/user/getValidateCode';
+			var url = 'http://api.joybike.com.cn/restful/user/getValidateCode';
 			var data ={mobile:$.trim($('.login_username').val())};
-//			$.ajax({
-//				url:url,
-//				data:data,
-//				dataType:'jsonp',
-//				jsonp:"",
-//				success:function(res){
-//					if(res.success){
-//						
-//					}
-//				},
-//				error:function(){
-//					
-//				}
-//			});
+			$.ajax({
+				url:url,
+				data:data,
+				type:'get',
+				dataType:'json',
+				success:function(res){
+					if(res.success){
+						
+					}else{
+						popup(res.errorMessage)
+					}
+				},
+				error:function(){
+					
+				}
+			});
 		},
 		checkIfValid:function(){//检测是否有效
 			var t=this;
@@ -90,16 +92,16 @@ $(function(){
 		},
 		login:function(){
 			var t=this;
-			var url ='http://api.joybike.com.cn/user/validate';
+			var url ='http://api.joybike.com.cn/restful/user/validate';
 			var data={mobile:$.trim($('.login_username').val()),validateCode:$.trim($('.login_passCode').val())}
 			$.ajax({
 				url:url,
 				data:data,
-				dataType:'jsonp',
-				jsonp:"",
+				dataType:'json',
+				type:"post",
 				success:function(res){
 					if(res.success){//请求成功，跳转
-						window.location.href="";
+						window.location.href="http://api.joybike.com.cn/joybikeH5/joy_bike/auth.html";
 					}else{
 						popup(res.errorMessage);
 					}
