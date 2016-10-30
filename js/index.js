@@ -1,4 +1,22 @@
 $(function() {
+		$.ajax({
+			type: "get",
+			url: "http://api.joybike.com.cn/restful/bicycle/available",
+			dataType: "json",
+			data: {
+				longitude:'116.28782',
+				dimension:'40.042944'
+			},
+			success: function(data){
+				console.log(data);
+				console.log(data.errorCode);
+				console.log(data.success);
+			},
+			error:function(data,status){
+				alert(data+"***"+status);
+			}
+		});			
+
 	//自定义定位标记
     var toolBar;
     var customMarker = new AMap.Marker({
@@ -52,34 +70,26 @@ $(function() {
 		curPosition.push(lat);
 		addIcon(curPosition);
 		
-		$.ajax({
+/*		$.ajax({
 			type: "get",
-			url: "http://api.joybike.com.cn/user/getValidateCode",
+			url: "http://api.joybike.com.cn/restful/bicycle/available",
 			contentType: "application/json",
 			dataType: "json",
 			data: {
-//				'longitude': lng,
-				'mobile': '18201341039'
+				longitude:lng,
+				dimension:lat
 			},
-			headers: {
-				"Accept": 'application/json',
-				"Authentication":"B9A45EAC2C54BF5F8379C3D3A352A052"
-			},
-			beforeSend:function(xhr){
-				xhr.setRequestHeader("Authentication","B9A45EAC2C54BF5F8379C3D3A352A052");
-			},
-			success: function(data,xmlHttpRequest,status){
-				alert(1);
+			success: function(data){
 				console.log(data);
-				console.log(data.data);
+				console.log(data.errorCode);
 				console.log(data.success);
-				console.log(status);
 			},
 			error:function(data,status){
-				alert(2);
 				alert(data+"***"+status);
 			}
-		});
+		});*/
+		
+		
 		
 		//地图上车辆Marker地理位置信息
 		var bikes = [{
@@ -204,6 +214,10 @@ $(function() {
 			            //icon可缺省，缺省时为默认的蓝色水滴图标，
 			            size : new AMap.Size(35,39.5)
 			    	});
+			    	var icon_cur = new AMap.Icon({
+			            image : 'images/index_bike_cur.png',
+			            size : new AMap.Size(35,39.5)
+			    	});
 					var marker = new AMap.Marker({
 						icon:icon,
 						position: bikes[i].center.split(','),
@@ -212,6 +226,9 @@ $(function() {
 						map: map
 					});
 					marker.on('click',function(){
+						console.log(this);
+						console.log(this.icon);
+
 						openInfo(index);
 						$('.index_guide').show();
 						map.on('click',function(){
