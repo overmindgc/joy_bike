@@ -13,13 +13,17 @@
 <body>
 <div class="wallet-info bgc-fff">
 	<div class="wallet-title text-c"><span class="icon-line">1</span><span class="wallet-tit ft-32 fc-333">我的余额</span><span class="icon-line r-line">1</span></div>
-	<div class="wallet-count text-c fc-333">20<span class="ft-32">元</span></div>
-	<div class="wallet-detail mg-c fc-fff text-c">查看交易明细</div>
+	<div class="wallet-count text-c fc-333" id="yue">--</div>
+	<div class="wallet-detail mg-c fc-fff text-c" toUrl="paydetail">查看交易明细</div>
 </div>
 <ul class="mt-60 userc-list ft-32 fc-666 bgc-fff border-1px border-top">
-	<li class="border-1px border-bottom">押金<span class="r-con ft-26 fc-999">400元</span><span class="icon-right-ar trans-v"></span></li>
+	<li class="border-1px border-bottom" toUrl="deposit">押金<span class="r-con ft-26 fc-999">400元</span><span class="icon-right-ar trans-v"></span></li>
 	<li class="border-1px border-bottom">代金券<span class="r-con ft-26 fc-999">5张</span><span class="icon-right-ar trans-v"></span></li>
 </ul>
-<div class="mt-60 userc-buy-btn ft-38 fc-fff text-c">充值</div>
+<div class="mt-60 userc-buy-btn ft-38 fc-fff text-c" toUrl="recharge">充值</div>
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/zepto.touch.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/user/wallet.js"></script>
 </body>
 </html>
