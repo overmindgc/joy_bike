@@ -1,25 +1,22 @@
 $(function() {
-	/*var timestamp = Date.parse(new Date());
+/*	//测试开锁
+	var timestamp = Date.parse(new Date());
 	timestamp = timestamp / 1000;
+	var params={};
+	params.userId=15;
+	params.bicycleCode = 'JOY002';
+  params.beginAt = timestamp;
+  params.beginDimension = 40.049;
+  params.beginLongitude = 116.294;
 	$.ajax({
 		type: "post",
-		url: "http://api.joybike.com.cn/restful/bicycle/unlock",
-		dataType: "json",
-		data: {
-			userId: 15,
-			bicycleCode: "JOY002",
-			beginAt: timestamp,
-			beginDimension:40.049,
-			beginLongitude:116.294
-		},
+		url: window.ROUT+"bicycle/unlock",
+		contentType:'application/json',
+		data: JSON.stringify(params),
 		success: function(data){
 			console.log(data);
-			console.log(data.errorMessage);
 			console.log(data.data);
 			console.log(data.success);
-		},
-		error:function(data,status){
-			alert(data+"***"+status);
 		}
 	});*/
 	//自定义定位标记
@@ -83,24 +80,21 @@ $(function() {
 		$('.index_orderBtn a').on('click',function(){
 			var timestamp = Date.parse(new Date());
 			timestamp = timestamp / 1000;
+			var params = {};
+			params.userId = 15;
+      params.bicycleCode = 'JOY002';
+      params.beginAt = timestamp;
+      //预约车辆
 			$.ajax({
-				type: "post",
-				url: window.ROUT+"bicycle/subscribe",
-				dataType: "json",
-				data: {
-					userId: 15,
-					bicycleCode: "JOY002",
-					beginAt: timestamp
-				},
-				success: function(data){
-					console.log(data);
-					console.log(data.errorMessage);
-					console.log(data.data);
-					console.log(data.success);
-				},
-				error:function(data,status){
-					alert(data+"***"+status);
-				}
+			    type: "post",
+					url: window.ROUT+"bicycle/subscribe",
+					contentType:'application/json',
+					data: JSON.stringify(params),
+					success: function(data){
+						console.log(data);
+						console.log(data.errorMessage);
+						console.log(data.data);
+					}
 			});
 		})
 		
@@ -135,7 +129,6 @@ $(function() {
 			$.ajax({
 				type: "get",
 				url: window.ROUT+"bicycle/available",
-				dataType: "json",
 				data: {
 					/*longitude:lng,
 					dimension:lat*/
@@ -386,9 +379,6 @@ $(function() {
 					        map.clearInfoWindow();
 					    }    
 				    }
-				},
-				error:function(data,status){
-					alert(data+"***"+status);
 				}
 			});
 	
