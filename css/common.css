@@ -81,3 +81,4 @@ header{width:100%;height: 2.75rem;line-height: 2.75rem;background: #2a2a2a;color
 header .common_back{width:1.625rem;height:2.75rem;background: url(../images/common_back.png) no-repeat;background-size: 1.625rem;position: absolute;left:0.9375rem;top:0.5625rem;}
 header .common_back:hover{background: url(../images/common_back_hover.png) no-repeat;background-size: 1.625rem;}
 #mask{position:fixed;top:0px;left:0px;width:100%;height:100%;background:#000;opacity:0.5;z-index:10;display:none;}
+.index_header{line-height:2.75rem;background: url(../images/index_logo.png) no-repeat center #2a2a2a;background-size: 5.25rem 1.3125rem;-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;padding:0 0.9375rem;}
