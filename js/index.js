@@ -85,7 +85,7 @@ $(function() {
 			timestamp = timestamp / 1000;
 			$.ajax({
 				type: "post",
-				url: "http://api.joybike.com.cn/restful/bicycle/subscribe",
+				url: window.ROUT+"bicycle/subscribe",
 				dataType: "json",
 				data: {
 					userId: 15,
@@ -134,7 +134,7 @@ $(function() {
 		function getBikes(){
 			$.ajax({
 				type: "get",
-				url: "http://api.joybike.com.cn/restful/bicycle/available",
+				url: window.ROUT+"bicycle/available",
 				dataType: "json",
 				data: {
 					/*longitude:lng,
