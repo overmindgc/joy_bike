@@ -23,8 +23,8 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .index_refresh img{width:2.125rem;height:2.125rem;}
 .index_tip{right:0.9375rem;bottom:0.125rem;}
 .index_tip img{width:1.875rem;height:1.875rem;}
-.index_guide{position: absolute;left:0;top:2.75rem;width:100%;background:#fff;z-index: 999;}
-.index_guide ul li.index_bikePos{line-height:2.71875rem;padding-left: 2.5rem;background: url(../images/index_bikePos.png) no-repeat #fff 1rem 0.8125rem;background-size: 0.875rem 1.15625rem;}
+.index_guide{display:none;position: absolute;left:0;top:2.75rem;width:100%;background:#fff;z-index: 999;}
+.index_guide ul li.index_bikePos{line-height:2.71875rem;padding-left: 2.5rem;padding-right:1rem;background: url(../images/index_bikePos.png) no-repeat #fff 1rem 0.8125rem;background-size: 0.875rem 1.15625rem;overflow:hidden;text-overflow:ellipsis;-webkit-text-overflow:ellipsis;white-space:nowrap;}
 .index_guide dt{padding-top:0.84375rem;}
 .index_guide ol{text-align: center;padding-bottom:1.125rem;}
 .index_guide ol span{font-size: 1.5rem;color: #ed6d2b;}
