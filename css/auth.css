@@ -169,6 +169,7 @@ html, body {
   box-sizing: border-box;
   color: #666;
   border-radius: 0.15625rem;
+  border:none;
 }
 #auth_container .auth_country option {
   width: 21.5625rem;

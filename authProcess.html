@@ -12,7 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="css/auth.css" />
 	<script type="text/javascript" src="js/zepto.min.js"  charset="utf-8"></script>
 	<script type="text/javascript" src="js/zepto.touch.js"  charset="utf-8"></script>
-	<script src="js/auth.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/auth/authProcess.js"  charset="utf-8"></script>
 	<body>
 		<header class="login_header">
 			<header><div class="common_back"></div>实名认证</header>				
@@ -20,12 +21,12 @@
 		<div id="auth_container">
 			<form action="">
 				<div class="auth_textWrap">
-					<p><input type="text"placeholder='请输入真实姓名' class="auth_trueName"/></p>
-					<p><input type="text" placeholder="请输入身份证号码"/></p>
+					<p><input type="text"placeholder='请输入真实姓名' class="auth_trueName" readonly="readonly"/></p>
+					<p><input type="text" placeholder="请输入身份证号码" class='idcard' readonly="readonly"/></p>
 					<p>
 						<select class="auth_country">
-							<option value="" style='width:200px;'>请输入您的国籍</option>
-							<option value="">中国</option>
+							<option value="请输入您的国籍" style='width:200px;'>请输入您的国籍</option>
+							<option value="中国">中国</option>
 						</select>
 					</p>
 				</div>
@@ -61,9 +62,9 @@
 					提示:请提供2张照片，一张为本人手持身份证件的正面合影; 另一张为身份证的原照片。请确保五官、证件内容均清晰可见。
 				</div>
 				<div class="auth_btnWrap">
-					<a href="javascript:;" class='auth_btn valid'>认证</a>
+					<a href="javascript:;" class='auth_btn'>认证</a>
 				</div>
-				
+				 <img id="portrait" src="" width="70" height="75">  
 			</form>
 		</div>
 		

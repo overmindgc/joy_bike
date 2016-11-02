@@ -5,7 +5,7 @@ html, body {
 
 .report_scanArea {
   margin: 0.625rem auto;
-  width: 21.5625rem;
+  width: 100%;
   height: 8.875rem;
   background: #fff;
   border-radius: 0.3125rem;
@@ -43,12 +43,12 @@ html, body {
   font-size: 0.8125rem;
   color: #999;
   line-height: 1.1875rem;
-  width: 21.5625rem;
+  width: 100%;
   margin: 0 auto;
 }
 
 .reportDetail {
-  width: 21.5625rem;
+  width: 100%;
   margin: 0 auto;
   border-radius: 0.3125rem;
   margin-top: 0.34375rem;
@@ -89,7 +89,7 @@ html, body {
 
 .otherReasons {
   background: #fff;
-  width: 21.5625rem;
+  width: 100%;
   height: 10.15625rem;
   margin: 0 auto;
   border-radius: 0.3125rem;

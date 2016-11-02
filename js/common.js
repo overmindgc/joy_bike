@@ -1,9 +1,9 @@
 /*
  *提炼一些公用方法
  * */
-;
-(function($) {
-    window.ROUT = 'http://h5.joybike.com.cn/restful/';
+
+
+    window.ROUT = 'http://60.205.142.55/forward/';
     //是否微信浏览器
     function isWeixin() {
         var nav = navigator.userAgent;
@@ -119,4 +119,4 @@
             options.secure ? '; secure' : ''
         ].join(''));
     };
-})(Zepto);
+

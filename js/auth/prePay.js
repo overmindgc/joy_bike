@@ -18,10 +18,10 @@ $(function(){
 						var data = res.data;
 						var html="";
 						$.each(data,function(i,el){
-							html+=  '<div class="prepay_price" data-price="+el.price+">'+
+							html+=  '<div class="prepay_price" data-price="'+el.price+'">'+
 										'<div class="innerPriceWrap">'+
-											'<p class='defaultPrice'>"+el.publishedPrice+"元</p>'+
-											'<p class="sellPrice">售价："+el.price+"元</p>'+
+											'<p class="defaultPrice">'+el.publishedPrice+'元</p>'+
+											'<p class="sellPrice">售价：'+el.price+'元</p>'+
 										'</div>'+		
 									'</div>';
 						});
@@ -37,7 +37,8 @@ $(function(){
 			$('.prepay_price').click(function(){
 				$('.count em').html($(this).attr('data-price'));
 				$(this).addClass('active').siblings().removeClass('active');
-			})
+			});
+			$('.prepay_price').eq(0).click();
 		}
 		
 	};

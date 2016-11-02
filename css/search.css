@@ -4,7 +4,7 @@ html, body {
 }
 
 .search_input {
-  width: 15.6875rem;
+  width: 70%;
   height: 1.6875rem;
   line-height: 1.6875rem;
   border: 1px solid #666;
