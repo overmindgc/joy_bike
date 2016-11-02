@@ -55,7 +55,8 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .trans-v{-webkit-transform: translate(0,-50%);transform: translate(0,-50%);}
 .trans-vc{-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);}
 .border-box{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}
-.charging-tip-msg{position: fixed;top: 50%;left: 50%;width: 84.266667%;padding: 2rem 1.40625rem 1.34375rem;border-radius: 5px;z-index:99999;}
+.charging-tip-msg,.order-fail{position: fixed;top: 50%;left: 50%;width: 84.266667%;padding: 2rem 1.40625rem 1.34375rem;border-radius: 5px;z-index:99999;}
+.order-fail{width:60%;padding-top:1.4rem;text-align: center;}
 .charging-tip-btns{margin-top: 1.875rem;text-align: center;}
 .charging-tip-btns span{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;width: 48.0662983%;height: 2.5rem;line-height: 2.5rem;border-radius: 3px;}
 .charging-tip-cancel{color: #ccc;background-color: #eee;border: 1px solid #eee;}

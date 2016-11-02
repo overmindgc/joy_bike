@@ -1,10 +1,28 @@
 $(function() {
-	//测试故障申报
-	var timestamp = Date.parse(new Date());
+/*	//身份认证
+	$.ajax({
+			    type: "get",
+				url: "http://60.205.142.55/forward/service/valideIdCard",
+				data: {
+					idcard:"130233199302123023",
+					realname:"%e6%9d%8e%e5%8d%ab%e4%bd%b3"
+				},
+				headers: {
+					"Accept": 'application/json'
+				},
+				success: function(data){
+					console.log(data);
+					console.log(data.result);
+				}
+			});*/
+			
+/*	//故障上报
+	var timestamp = Date.parse(new Date()); 
 	timestamp = timestamp / 1000;
 	var params={};
 	params.bicycleCode = 'JOY002';
 	params.cause= '车轮丢了';
+	params.faultImg= [];
 	params.createId= 15;
 	params.createAt = timestamp;
 	$.ajax({
@@ -16,9 +34,7 @@ $(function() {
 			console.log(data);
 			console.log(data.data);
 		}
-	});
-	
-	
+	});*/
 /*	//测试开锁
 	var timestamp = Date.parse(new Date());
 	timestamp = timestamp / 1000;
@@ -95,6 +111,7 @@ $(function() {
 		curPosition.push(lat);*/
 		var curPosition=[116.295,40.048];
 		var curAddress;
+		var vehicleId;
 		map.plugin('AMap.Geocoder',function() {  //逆地理编码
 	        var geocoder = new AMap.Geocoder({
 	            radius: 1000,
@@ -125,6 +142,21 @@ $(function() {
 		};
 				
 //		toolBar.doLocation();
+
+//判断用户使用状态
+	$.ajax({
+		type: "get",
+		url: window.ROUT+"user/useInfo",
+		contentType:'application/json',
+		data: {
+			userId:$.getCookie('userId')||15
+		},
+		success: function(data){
+			console.log(data);
+			/*console.log(data.data);
+			console.log(data.errorCode);*/
+		}
+	});
 		getBikes();
 		$('.index_refresh').click(getBikes);
 
@@ -152,231 +184,234 @@ $(function() {
 					dimension:'40.048'
 				},
 				success: function(data){
-/*					console.log(data.success);
 					console.log(data);
-					console.log(data.data);*/
-										
-					var bikes=data.data;
-					var markers=[];
-					var len=bikes.length;
-
-					for (var i = 0; i < len; i += 1) {						
-//						console.log([bikes[i].lastLongitude,bikes[i].lastDimension]);						
-						(function(index){
-							var icon = new AMap.Icon({
-					            image : 'images/index_bike.png',
-					            //icon可缺省，缺省时为默认的蓝色水滴图标，
-					            size : new AMap.Size(35,39.5)
-					    	});
-					    	var icon_cur = new AMap.Icon({
-					            image : 'images/index_bike_cur.png',
-					            size : new AMap.Size(35,39.5)
-					    	});
-							var marker = new AMap.Marker({
-								icon:icon,
-								position: [bikes[i].lastLongitude,bikes[i].lastDimension],
-								offset : new AMap.Pixel(-17.5,-19.75),
-								title: bikes[i].vehicleId,
-								map: map
-							});
-							marker.on('click',function(){
-								/*console.log(this);
-								console.log(this.icon);*/		
-								openInfo(index);
-								walkRoutes(index);								
-								$('.index_guide').show();
-								map.on('click',function(){
-									$('.index_guide').hide();
-								})   
-							})
-							markers.push(marker);
-						})(i);									
-					};
-					map.setFitView();
-					
-					function walkRoutes(index){
-						//步行导航
-					    var walking = new AMap.Walking({}); 
-					    //根据起终点坐标规划步行路线
-					    walking.search(curPosition,[bikes[index].lastLongitude,bikes[index].lastDimension],function(status, result){
-					    	var routeS = result.routes;
-					    	if (routeS.length <= 0) {
-					            console.log('不可行');
-					       }else{				           
-					            for(var v =0; v< routeS.length;v++){
-					                //步行导航路段数
-					                var  steps = routeS[v].steps;
-					                //步行距离（米）
-					                var distance = routeS[v].distance;
-					                //步行时间
-					                var time = Math.floor(routeS[v].time/60);
-					                //用车引导弹窗
-									var popup = '<ul>'+
-													'<li class="index_bikePos ft-32 fc-666 bd-b">'+curAddress+'</li>'+
-													'<li class="bd-b fc-999">'+
-														'<dl class="ft-26">'+
-															'<dt>'+
-																'<ol class="dp-box dp-flex">'+
-																	'<li class="dp-f-1"><span>1</span>辆</li>'+
-																	'<li class="dp-f-1"><span>'+distance+'</span>米</li>'+
-																	'<li class="dp-f-1"><span>'+time+'</span>分钟</li>'+
-																'</ol>'+
-															'</dt>'+
-															'<dd>'+
-																'<ol class="dp-box dp-flex">'+
-																	'<li class="dp-f-1">可用自行车</li>'+
-																	'<li class="dp-f-1">距离起始位置</li>'+
-																	'<li class="dp-f-1">步行可到达</li>'+
-																'</ol>'+
-															'</dd>'+
-															'<dd class="index_orderBtn">'+
-																'<a href="javascript:;" class="bgc-ed6d2b ft-38">预约用车</a>'+
-															'</dd>'+
-														'</dl>'+
-													'</li>'+
-												'</ul>';
-					                $('.index_guide').html(popup);
-					                $('.index_orderBtn a').click(orderBike);
-					            }
-					            walkingDrawLine(index);
-					        }
-					    	
-					    	//绘制步行导航路线
-							function walkingDrawLine(index) {
-								if(extra_line1!=null){
-									extra_line1.setMap(null);
-								}
-								if(extra_line2!=null){
-									extra_line2.setMap(null);
-								}
-								if(extra_line3!=null){
-									extra_line3.setMap(null);
-								}
-							    //起点、终点图标
-							    /*var sicon = new AMap.Icon({
-							        image: "images/tripdetail_start.png",
-							        size:new AMap.Size(44,44),
-							        imageOffset: new AMap.Pixel(-334, -180)
-							    });
-							    var startmarker = new AMap.Marker({
-							        icon : sicon, //复杂图标
-							        visible : true,
-							        position : curPosition,
-							        map:map,
-							        offset : {
-							            x : -16,
-							            y : -40
-							        }
-							    });
-							    var eicon = new AMap.Icon({
-							        image: "images/tripdetail_end.png",
-							        size:new AMap.Size(44,44),
-							        imageOffset: new AMap.Pixel(-334, -134)
-							    });
-							    var endmarker = new AMap.Marker({
-							        icon : eicon, //复杂图标
-							        visible : true,
-							        position : [bikes[index].lastLongitude,bikes[index].lastDimension],
-							        map:map,
-							        offset : {
-							            x : -16,
-							            y : -40
-							        }
-							    });*/
-							    //起点到路线的起点 路线的终点到终点 绘制无道路部分
-							    var extra_path1 = new Array();
-							    extra_path1.push(curPosition);
-							    extra_path1.push(steps[0].path[0]);
-							    extra_line1 = new AMap.Polyline({
-							        map: map,
-							        path: extra_path1,
-							        strokeColor: "#5fab15",
-							        strokeOpacity: 0.8,
-							        strokeWeight: 7,
-							        strokeStyle: "dashed",
-							        strokeDasharray: [10, 5]
-							    });							
-							    var extra_path2 = new Array();
-							    var path_xy = steps[(steps.length-1)].path;
-							    extra_path2.push([bikes[index].lastLongitude,bikes[index].lastDimension]);
-							    extra_path2.push(path_xy[(path_xy.length-1)]);
-							    /*console.log("2~"+extra_path2.toString());*/
-							    extra_line2 = new AMap.Polyline({
-							        map: map,
-							        path: extra_path2,
-							        strokeColor: "#5fab15",
-							        strokeOpacity: 0.8,
-							        strokeWeight: 7,
-							        strokeStyle: "dashed",
-							        strokeBorder:"1px solid #559814",
-							        strokeDasharray: [10, 5]
-							    }); 
-							 	var extra_path3 = new Array();
-							    for(var s=0; s<steps.length; s++) {
-							    	var array1 = steps[s].path.toString().split(',');
-							    	for(var i=1;i<array1.length;){
-							    		var arr = [parseFloat(array1[i-1]), parseFloat(array1[i])];
-							    		i = i+2;
-							    		extra_path3.push(arr);
-							    	}
-							    }
-							    extra_line3 = new AMap.Polyline({
-							            map: map,
-							            path: extra_path3,
-							            strokeColor: "#5fab15",
-							            strokeOpacity: 0.8,
-							            strokeWeight: 7
-							    });
-							    map.setFitView();
-							};
-							
-					    });
-					}
-					
-					//在指定位置打开信息窗体
-				    function openInfo(i) {
-				        //构建信息窗体中显示的内容
-				        var title = '';
-				        var content = [];
-				    	content.push(
-				    		'<div style="position:relative;top:0;width:3rem;height: 2.15625rem;border-radius: 2.5px;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);">'+
-							'<div class="index_thumbnail" style="z-index:2;position:absolute;left:0;top:0;width:3rem;height: 2.15625rem;'+
-							'background:url(images/index_thumbnail.png) no-repeat #fff 0.125rem 0.125rem;'+
-							'background-size:2.75rem 1.9375rem;"></div>'+
-							'<span style="display:block;background:#fff;position:absolute;bottom:-0.15rem;left:50%;margin-left:-0.15rem;width:0.3125rem;height:0.3125rem;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);transform: rotate(-45deg);"></span></div>'
-						);
-				        var infoWindow = new AMap.InfoWindow({
-					        isCustom: true,  //使用自定义窗体
-					        content: createInfoWindow(title, content.join("<br/>")),
-					    });
-				        infoWindow.open(map, [bikes[i].lastLongitude,bikes[i].lastDimension]);
-			
-				        
-				        //构建自定义信息窗体
-					    function createInfoWindow(title, content) {
-					        var info = document.createElement("div");
-					        info.className = "info";
-							info.style.marginBottom = '1.5625rem';
-							info.innerHTML = content
-							info.onclick = function(){
-								$('#mask').show();
-								$('.index_bikeInfo').show();
-								$('#mask').on('click',function(){
-									$('.index_bikeInfo').hide();
-									$(this).hide();
+					if(data.status==200 && data.success){
+						var data=eval(data.data);
+						var bikes=data;
+						var markers=[];
+						var len=bikes.length;
+						
+						for (var i = 0; i < len; i += 1) {						
+	//						console.log([bikes[i].lastLongitude,bikes[i].lastDimension]);						
+							(function(index){
+								var icon = new AMap.Icon({
+						            image : 'images/index_bike.png',
+						            //icon可缺省，缺省时为默认的蓝色水滴图标，
+						            size : new AMap.Size(35,39.5)
+						    	});
+						    	var icon_cur = new AMap.Icon({
+						            image : 'images/index_bike_cur.png',
+						            size : new AMap.Size(35,39.5)
+						    	});
+								var marker = new AMap.Marker({
+									icon:icon,
+									position: [bikes[i].lastLongitude,bikes[i].lastDimension],
+									offset : new AMap.Pixel(-17.5,-19.75),
+									title: bikes[i].vehicleId,
+									map: map
 								});
-								$('.index_feedback').on('click',function(){
-									$('.index_bikeInfo').hide();
-									$('#mask').hide();
+								marker.on('click',function(){
+									vehicleId=this.H.title;
+									openInfo(index);
+									walkRoutes(index);								
+									$('.index_guide').show();
+									map.on('click',function(){
+										$('.index_guide').hide();
+									})   
 								})
-							};
-					        return info;
+								markers.push(marker);
+							})(i);									
+						};
+						map.setFitView();
+						
+						function walkRoutes(index){
+							//步行导航
+						    var walking = new AMap.Walking({}); 
+						    //根据起终点坐标规划步行路线
+						    walking.search(curPosition,[bikes[index].lastLongitude,bikes[index].lastDimension],function(status, result){
+						    	var routeS = result.routes;
+						    	if (routeS.length <= 0) {
+						            console.log('不可行');
+						       }else{				           
+						            for(var v =0; v< routeS.length;v++){
+						                //步行导航路段数
+						                var  steps = routeS[v].steps;
+						                //步行距离（米）
+						                var distance = routeS[v].distance;
+						                //步行时间
+						                var time = Math.floor(routeS[v].time/60);
+						                //用车引导弹窗
+										var popup = '<ul>'+
+														'<li class="index_bikePos ft-32 fc-666 bd-b">'+curAddress+'</li>'+
+														'<li class="bd-b fc-999">'+
+															'<dl class="ft-26">'+
+																'<dt>'+
+																	'<ol class="dp-box dp-flex">'+
+																		'<li class="dp-f-1"><span>1</span>辆</li>'+
+																		'<li class="dp-f-1"><span>'+distance+'</span>米</li>'+
+																		'<li class="dp-f-1"><span>'+time+'</span>分钟</li>'+
+																	'</ol>'+
+																'</dt>'+
+																'<dd>'+
+																	'<ol class="dp-box dp-flex">'+
+																		'<li class="dp-f-1">可用自行车</li>'+
+																		'<li class="dp-f-1">距离起始位置</li>'+
+																		'<li class="dp-f-1">步行可到达</li>'+
+																	'</ol>'+
+																'</dd>'+
+																'<dd class="index_orderBtn">'+
+																	'<a href="javascript:;" class="bgc-ed6d2b ft-38">预约用车</a>'+
+																'</dd>'+
+															'</dl>'+
+														'</li>'+
+													'</ul>';
+						                $('.index_guide').html(popup);
+						                $('.index_orderBtn a').click(orderBike);
+						            }
+						            walkingDrawLine(index);
+						        }
+						    	
+						    	//绘制步行导航路线
+								function walkingDrawLine(index) {
+									if(extra_line1!=null){
+										extra_line1.setMap(null);
+									}
+									if(extra_line2!=null){
+										extra_line2.setMap(null);
+									}
+									if(extra_line3!=null){
+										extra_line3.setMap(null);
+									}
+								    //起点、终点图标
+								    /*var sicon = new AMap.Icon({
+								        image: "images/tripdetail_start.png",
+								        size:new AMap.Size(44,44),
+								        imageOffset: new AMap.Pixel(-334, -180)
+								    });
+								    var startmarker = new AMap.Marker({
+								        icon : sicon, //复杂图标
+								        visible : true,
+								        position : curPosition,
+								        map:map,
+								        offset : {
+								            x : -16,
+								            y : -40
+								        }
+								    });
+								    var eicon = new AMap.Icon({
+								        image: "images/tripdetail_end.png",
+								        size:new AMap.Size(44,44),
+								        imageOffset: new AMap.Pixel(-334, -134)
+								    });
+								    var endmarker = new AMap.Marker({
+								        icon : eicon, //复杂图标
+								        visible : true,
+								        position : [bikes[index].lastLongitude,bikes[index].lastDimension],
+								        map:map,
+								        offset : {
+								            x : -16,
+								            y : -40
+								        }
+								    });*/
+								    //起点到路线的起点 路线的终点到终点 绘制无道路部分
+								    var extra_path1 = new Array();
+								    extra_path1.push(curPosition);
+								    extra_path1.push(steps[0].path[0]);
+								    extra_line1 = new AMap.Polyline({
+								        map: map,
+								        path: extra_path1,
+								        strokeColor: "#5fab15",
+								        strokeOpacity: 0.8,
+								        strokeWeight: 7,
+								        strokeStyle: "dashed",
+								        strokeDasharray: [10, 5]
+								    });							
+								    var extra_path2 = new Array();
+								    var path_xy = steps[(steps.length-1)].path;
+								    extra_path2.push([bikes[index].lastLongitude,bikes[index].lastDimension]);
+								    extra_path2.push(path_xy[(path_xy.length-1)]);
+								    /*console.log("2~"+extra_path2.toString());*/
+								    extra_line2 = new AMap.Polyline({
+								        map: map,
+								        path: extra_path2,
+								        strokeColor: "#5fab15",
+								        strokeOpacity: 0.8,
+								        strokeWeight: 7,
+								        strokeStyle: "dashed",
+								        strokeBorder:"1px solid #559814",
+								        strokeDasharray: [10, 5]
+								    }); 
+								 	var extra_path3 = new Array();
+								    for(var s=0; s<steps.length; s++) {
+								    	var array1 = steps[s].path.toString().split(',');
+								    	for(var i=1;i<array1.length;){
+								    		var arr = [parseFloat(array1[i-1]), parseFloat(array1[i])];
+								    		i = i+2;
+								    		extra_path3.push(arr);
+								    	}
+								    }
+								    extra_line3 = new AMap.Polyline({
+								            map: map,
+								            path: extra_path3,
+								            strokeColor: "#5fab15",
+								            strokeOpacity: 0.8,
+								            strokeWeight: 7
+								    });
+								    map.setFitView();
+								};
+								
+						    });
+						}
+						
+						//在指定位置打开信息窗体
+					    function openInfo(i) {
+					        //构建信息窗体中显示的内容
+					        var title = '';
+					        var content = [];
+					    	content.push(
+					    		'<div style="position:relative;top:0;width:3rem;height: 2.15625rem;border-radius: 2.5px;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);">'+
+								'<div class="index_thumbnail" style="z-index:2;position:absolute;left:0;top:0;width:3rem;height: 2.15625rem;'+
+								'background:url(images/index_thumbnail.png) no-repeat #fff 0.125rem 0.125rem;'+
+								'background-size:2.75rem 1.9375rem;"></div>'+
+								'<span style="display:block;background:#fff;position:absolute;bottom:-0.15rem;left:50%;margin-left:-0.15rem;width:0.3125rem;height:0.3125rem;-webkit-box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);box-shadow:0px 1.5px 3.5px rgba(0,0,0,0.2);transform: rotate(-45deg);"></span></div>'
+							);
+					        var infoWindow = new AMap.InfoWindow({
+						        isCustom: true,  //使用自定义窗体
+						        content: createInfoWindow(title, content.join("<br/>")),
+						    });
+					        infoWindow.open(map, [bikes[i].lastLongitude,bikes[i].lastDimension]);
+				
+					        
+					        //构建自定义信息窗体
+						    function createInfoWindow(title, content) {
+						        var info = document.createElement("div");
+						        info.className = "info";
+								info.style.marginBottom = '1.5625rem';
+								info.innerHTML = content
+								info.onclick = function(){
+									$('#mask').show();
+									$('.index_bikeInfo').show();
+									$('#mask').on('click',function(){
+										$('.index_bikeInfo').hide();
+										$(this).hide();
+									});
+									$('.index_feedback').on('click',function(){
+										$('.index_bikeInfo').hide();
+										$('#mask').hide();
+									})
+								};
+						        return info;
+						    }
+						    //关闭信息窗体
+						    function closeInfoWindow() {
+						        map.clearInfoWindow();
+						    }    
 					    }
-					    //关闭信息窗体
-					    function closeInfoWindow() {
-					        map.clearInfoWindow();
-					    }    
-				    }
+				
+					};
+					
+				
+
 				}
 			});
 	
@@ -387,8 +422,8 @@ $(function() {
 			var timestamp = Date.parse(new Date());
 			timestamp = timestamp / 1000;
 			var params = {};
-			params.userId = 15;
-			params.bicycleCode = 'JOY002';
+			params.userId = $.getCookie('userId')||15;
+			params.bicycleCode = vehicleId;
 			params.beginAt = timestamp;
 			//预约车辆
 			$.ajax({
@@ -398,38 +433,83 @@ $(function() {
 				data: JSON.stringify(params),
 				success: function(data){
 					console.log(data);
-					console.log(data.errorMessage);
-					var popup = '<div class="dp-flex dp-box" style="height:10rem;">'+
-									'<ul class="index_orderList dp-f-1">'+
-										'<li class="index_bikePos ft-32 fc-666 bd-b bgc-fff">林业大学北路</li>'+
-										'<li class="bd-b fc-999 bgc-fff">'+
-											'<dl class="ft-26">'+
-												'<dt class="mg-l">自行车编号</dt>'+
-												'<dd class="fc-666 ft-32 mg-l index_bikeNum">26549548465</dd>'+
-											'</dl>'+
-										'</li>'+
-										'<li class="ft-26 fc-666 index_booking">'+
-											'<span class="ft-32 fc-ed6d2b mg-l">预约中</span>保留时间：15:00'+
-										'</li>'+
-									'</ul>'+
-									'<ul class="index_bell">'+
-										'<li class="index_findBike">'+
-											'<span class="ft-26 fc-999">寻车铃</span>'+
-										'</li>'+
-										'<li class="index_cancel ft-26 bgc-ed6d2b">取消预约</li>'+
-									'</ul>'+
-								'</div>';
-					$('.index_guide').html(popup);
-					$('.index_cancel').click(cancelBike);
-					$('.index_findBike').click(findBike);
+					if(data.status==200 && data.success &&data.errorCode==0){
+						var popup = '<div class="dp-flex dp-box" style="height:10rem;">'+
+										'<ul class="index_orderList dp-f-1">'+
+											'<li class="index_bikePos ft-32 fc-666 bd-b bgc-fff">林业大学北路</li>'+
+											'<li class="bd-b fc-999 bgc-fff">'+
+												'<dl class="ft-26">'+
+													'<dt class="mg-l">自行车编号</dt>'+
+													'<dd class="fc-666 ft-32 mg-l index_bikeNum">26549548465</dd>'+
+												'</dl>'+
+											'</li>'+
+											'<li class="ft-26 fc-666 index_booking">'+
+												'<span class="ft-32 fc-ed6d2b mg-l">预约中</span>保留时间：<b>15:00</b>'+
+											'</li>'+
+										'</ul>'+
+										'<ul class="index_bell">'+
+											'<li class="index_findBike">'+
+												'<span class="ft-26 fc-999">寻车铃</span>'+
+											'</li>'+
+											'<li class="index_cancel ft-26 bgc-ed6d2b">取消预约</li>'+
+										'</ul>'+
+									'</div>';
+						countDown(900);
+						$('.index_guide').html(popup);
+						$('.index_cancel').click(cancelBike);
+						$('.index_findBike').click(findBike);
+						function countDown(t){
+							$(".index_booking b").text(t/60+':00');
+							var s=60;
+							var min = setInterval(function () {
+								t--;							
+								s--;
+								if(s==-1){
+									s=59
+								}
+								if(s<10){
+									s='0'+s;
+								}
+								var m=Math.floor(t/60);
+								
+								$(".index_booking b").text(m+':'+s);
+								if (t == 0 && s==0) {
+									clearInterval(min);
+									$('.index_guide').html('');
+								}
+							},1000);
+						}
+					}
+					if(data.status==200 && !data.success &&data.errorCode==1000){
+						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+											'<p class="ft-32 fc-66 lh-40">预约失败，重复预约</p>'+
+										'</div>'
+						$(document.body).append(orderFail);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.order-fail').remove();
+							$(this).hide();
+						})
+					}
+					if(data.errorCode==5014){
+						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+											'<p class="ft-32 fc-66 lh-40">预约失败，请您重新预约</p>'+
+										'</div>'
+						$(document.body).append(orderFail);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.order-fail').remove();
+							$(this).hide();
+						})
+					}
+				
 				}
 			});
 		}
-	
 		function cancelBike(){
 			var params = {};
-			params.userId = 15;
-			params.bicycleCode = "JOY002";
+			params.userId = $.getCookie('userId')||15;
+			params.bicycleCode = vehicleId;
 			//取消预约
 			$.ajax({
 			    type: "post",
@@ -439,7 +519,30 @@ $(function() {
 				success: function(data){
 					console.log(data);
 					console.log(data.data);
-					$('.index_guide').html('');
+					if(data.status==200 && data.success &&data.errorCode==0){
+						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+											'<p class="ft-32 fc-66 lh-40">取消预约成功</p>'+
+										'</div>'
+						$(document.body).append(orderFail);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.order-fail').remove();
+							$(this).hide();
+						})
+						$('.index_guide').html('');
+					}else{
+						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+											'<p class="ft-32 fc-66 lh-40">取消预约失败</p>'+
+										'</div>'
+						$(document.body).append(orderFail);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.order-fail').remove();
+							$(this).hide();
+						})
+						$('.index_guide').html('');
+					}
+					
 				}
 			});
 		}
@@ -451,12 +554,32 @@ $(function() {
 				url: window.ROUT+"bicycle/lookup",
 				contentType:'application/json',
 				data: {
-					userId:15,
-					bicycleCode:'JOY002'
+					userId:$.getCookie('userId')||15,
+					bicycleCode:vehicleId
 				},
 				success: function(data){
 					console.log(data);
 					console.log(data.data);
+				}
+			});
+		}
+		//GPS数据上报
+		function sendData(){
+			var timestamp = Date.parse(new Date());
+			timestamp = timestamp / 1000;
+			var params={};
+			params.bicycleCode = vehicleId;			
+			params.dimension = 40.049;
+			params.longitude = 116.294;
+			params.createAt = timestamp;
+			$.ajax({
+				type: "post",
+				url: window.ROUT+"send",
+				contentType:'application/json',
+				data: JSON.stringify(params),
+				success: function(data){
+					console.log(data);
+					console.log(1);
 				}
 			});
 		}
