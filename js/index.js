@@ -147,7 +147,6 @@ $(function() {
 	$.ajax({
 		type: "get",
 		url: window.ROUT+"user/useInfo",
-		contentType:'application/json',
 		data: {
 			userId:$.getCookie('userId')||15
 		},
@@ -188,6 +187,7 @@ $(function() {
 					if(data.status==200 && data.success){
 						var data=eval(data.data);
 						var bikes=data;
+						console.log(bikes);
 						var markers=[];
 						var len=bikes.length;
 						
@@ -196,7 +196,6 @@ $(function() {
 							(function(index){
 								var icon = new AMap.Icon({
 						            image : 'images/index_bike.png',
-						            //icon可缺省，缺省时为默认的蓝色水滴图标，
 						            size : new AMap.Size(35,39.5)
 						    	});
 						    	var icon_cur = new AMap.Icon({
@@ -436,11 +435,11 @@ $(function() {
 					if(data.status==200 && data.success &&data.errorCode==0){
 						var popup = '<div class="dp-flex dp-box" style="height:10rem;">'+
 										'<ul class="index_orderList dp-f-1">'+
-											'<li class="index_bikePos ft-32 fc-666 bd-b bgc-fff">林业大学北路</li>'+
+											'<li class="index_bikePos ft-32 fc-666 bd-b bgc-fff">'+curAddress+'</li>'+
 											'<li class="bd-b fc-999 bgc-fff">'+
 												'<dl class="ft-26">'+
 													'<dt class="mg-l">自行车编号</dt>'+
-													'<dd class="fc-666 ft-32 mg-l index_bikeNum">26549548465</dd>'+
+													'<dd class="fc-666 ft-32 mg-l index_bikeNum">'+vehicleId+'</dd>'+
 												'</dl>'+
 											'</li>'+
 											'<li class="ft-26 fc-666 index_booking">'+
@@ -456,12 +455,11 @@ $(function() {
 									'</div>';
 						countDown(900);
 						$('.index_guide').html(popup);
-						$('.index_cancel').click(cancelBike);
-						$('.index_findBike').click(findBike);
+						var min;
 						function countDown(t){
 							$(".index_booking b").text(t/60+':00');
 							var s=60;
-							var min = setInterval(function () {
+							min = setInterval(function () {
 								t--;							
 								s--;
 								if(s==-1){
@@ -479,6 +477,11 @@ $(function() {
 								}
 							},1000);
 						}
+						$('.index_cancel').on('click',function(){
+							cancelBike();
+							clearInterval(min);
+						});
+						$('.index_findBike').click(findBike);
 					}
 					if(data.status==200 && !data.success &&data.errorCode==1000){
 						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
@@ -540,7 +543,6 @@ $(function() {
 							$('.order-fail').remove();
 							$(this).hide();
 						})
-						$('.index_guide').html('');
 					}
 					
 				}
