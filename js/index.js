@@ -1,60 +1,15 @@
 $(function() {
-/*	//身份认证
+	//获取用户已完成订单与行程记录测测测
 	$.ajax({
-			    type: "get",
-				url: "http://60.205.142.55/forward/service/valideIdCard",
-				data: {
-					idcard:"130233199302123023",
-					realname:"%e6%9d%8e%e5%8d%ab%e4%bd%b3"
-				},
-				headers: {
-					"Accept": 'application/json'
-				},
-				success: function(data){
-					console.log(data);
-					console.log(data.result);
-				}
-			});*/
-			
-/*	//故障上报
-	var timestamp = Date.parse(new Date()); 
-	timestamp = timestamp / 1000;
-	var params={};
-	params.bicycleCode = 'JOY002';
-	params.cause= '车轮丢了';
-	params.faultImg= [];
-	params.createId= 15;
-	params.createAt = timestamp;
-	$.ajax({
-		type: "post",
-		url: window.ROUT+"bicycle/submit",
-		contentType:'application/json',
-		data: JSON.stringify(params),
+	    type: "get",
+		url: "http://60.205.142.55/forward/user/getSuccessOrder",
+		data: {
+			userId:15
+		},
 		success: function(data){
 			console.log(data);
-			console.log(data.data);
 		}
-	});*/
-/*	//测试开锁
-	var timestamp = Date.parse(new Date());
-	timestamp = timestamp / 1000;
-	var params={};
-	params.userId=15;
-	params.bicycleCode = 'JOY002';
-	params.beginAt = timestamp;
-	params.beginDimension = 40.049;
-	params.beginLongitude = 116.294;
-	$.ajax({
-		type: "post",
-		url: window.ROUT+"bicycle/unlock",
-		contentType:'application/json',
-		data: JSON.stringify(params),
-		success: function(data){
-			console.log(data);
-			console.log(data.data);
-			console.log(data.success);
-		}
-	});*/
+	});
 
 	//加载地图
 	var map = new AMap.Map('container', {
@@ -77,7 +32,8 @@ $(function() {
         toolBar = new AMap.ToolBar({locationMarker: customMarker}); //设置地位标记为自定义标记
         map.addControl(toolBar);
     });
-    
+				
+//	toolBar.doLocation();    
 /*	if(location.href.indexOf('&guide=1')!==-1){
 		map.setStatus({scrollWheel:false})
 	}*/
@@ -128,7 +84,7 @@ $(function() {
 		});
 	    function geocoder_CallBack(data) {
 	        curAddress = data.regeocode.formattedAddress; //返回地址描述
-	    }		
+	    }
 		function addIcon(pos){	//添加点标记，并使用自己的icon		
 		    new AMap.Marker({
 		        map: map,
@@ -140,26 +96,8 @@ $(function() {
 		        })        
 		    });
 		};
-				
-//		toolBar.doLocation();
 
-//判断用户使用状态
-	$.ajax({
-		type: "get",
-		url: window.ROUT+"user/useInfo",
-		data: {
-			userId:$.getCookie('userId')||15
-		},
-		success: function(data){
-			console.log(data);
-			/*console.log(data.data);
-			console.log(data.errorCode);*/
-		}
-	});
-		getBikes();
-		$('.index_refresh').click(getBikes);
-
-/*	    //地图中心点指针，事件回调函数
+/*	    //地图中心点指针事件回调函数
 	    var callBackFn = function(e) {
 	    	customMarker.setPosition(map.getCenter());
 	    };
@@ -168,9 +106,75 @@ $(function() {
 	    function removeListener() {
 	        map.off('touchmove', callBackFn);
 	    }*/
-	   
-	   
-	    
+
+		//判断用户使用状态
+		$.ajax({
+			type: "get",
+			url: window.ROUT+"user/useInfo",
+			data: {
+				userId:$.getCookie('userId')||15
+			},
+			success: function(data){
+				var evalData=eval('('+data.data+')');
+				console.log(evalData);
+				if(data.status==200 && data.success &&data.errorCode==0){
+					//正在使用中的骑行订单-显示正在用车
+					var popup = '<ul>'+
+									'<li class="index_bikePos ft-32 fc-666 bd-b">'+'海淀区中关村软件园'+'</li>'+
+									'<li class="bd-b fc-999">'+
+										'<dl class="ft-26">'+
+											'<dt>'+
+												'<ol class="dp-box dp-flex">'+
+													'<li class="dp-f-1"><span>10</span>分钟</li>'+
+													'<li class="dp-f-1"><span>40</span>米</li>'+
+													'<li class="dp-f-1"><span>2</span>大卡</li>'+
+												'</ol>'+
+											'</dt>'+
+											'<dd>'+
+												'<ol class="dp-box dp-flex">'+
+													'<li class="dp-f-1">骑行时间</li>'+
+													'<li class="dp-f-1">骑行距离</li>'+
+													'<li class="dp-f-1">运动燃烧</li>'+
+												'</ol>'+
+											'</dd>'+
+										'</dl>'+
+									'</li>'+
+									'<li class="index_using bgc-ed6d2b cl ft-26">'+
+										'<div class="fl">正在用车 <b>'+evalData.vehicleOrderDto.vehicleId+'</b></div>'+
+										'<div class="fr">预计费用 <b>1元</b></div>'+
+									'</li>'+
+								'</ul>';
+	                $('.index_guide').html(popup).show();
+	                $('.index_using').on('click',function(){
+	                	var tip='<div class="index_popup index_lock">'+
+		                			'<dl>'+
+										'<dt class="fc-333 ft-32 pd-t">如何关锁</dt>'+
+										'<dd class="ft-26 fc-666">关锁无须操作手机，只需手动将锁关闭合上锁环，即可完成还车，结束计费。</dd>'+
+									'</dl>'+
+								'</div>';
+						$(document.body).append(tip);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.index_popup').remove();
+							$(this).hide();
+						})
+	                })
+	                
+				};
+				if(data.status==200 && data.success &&data.errorCode==1){
+					//未过期的预约信息-显示预约中
+					orderBike();
+				};
+				if(data.status==200 && data.success &&data.errorCode==4){
+					//骑行已结束未付款的订单-跳去自动扣款
+					console.log('您还有未付款的订单，支付后才可继续用车');
+				};
+			}
+		});
+
+		getBikes();
+		$('.index_refresh').click(getBikes);
+	   	    
 		//将获得的车辆信息添加到地图上
 		function getBikes(){
 			$.ajax({
@@ -183,14 +187,12 @@ $(function() {
 					dimension:'40.048'
 				},
 				success: function(data){
-					console.log(data);
+					console.log(data.data);
 					if(data.status==200 && data.success){
-						var data=eval(data.data);
-						var bikes=data;
-						console.log(bikes);
+						var evalData=eval(data.data);
+						var bikes=evalData;
 						var markers=[];
-						var len=bikes.length;
-						
+						var len=bikes.length;						
 						for (var i = 0; i < len; i += 1) {						
 	//						console.log([bikes[i].lastLongitude,bikes[i].lastDimension]);						
 							(function(index){
@@ -379,8 +381,7 @@ $(function() {
 						        content: createInfoWindow(title, content.join("<br/>")),
 						    });
 					        infoWindow.open(map, [bikes[i].lastLongitude,bikes[i].lastDimension]);
-				
-					        
+									        
 					        //构建自定义信息窗体
 						    function createInfoWindow(title, content) {
 						        var info = document.createElement("div");
@@ -408,9 +409,6 @@ $(function() {
 					    }
 				
 					};
-					
-				
-
 				}
 			});
 	
@@ -609,12 +607,9 @@ $(function() {
 	    str += '</p>';
 	    result.innerHTML = str;*/
 	}
-	
-
 
 	//去除高德图标链接
 	$('.amap-logo').attr('href','javascript:;');
 	$('.amap-logo').attr('target','_self');
 	
-
 });
