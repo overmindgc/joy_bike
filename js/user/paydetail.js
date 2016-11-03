@@ -32,7 +32,7 @@
 				data :{userId:_this.userId},
 				success:function(d){
 					if(d.errorCode == 0 || d.success){
-						var len = d.data.length,_html='';
+						var len = d.data&&d.data.length||0,_html='';
 						if(len){
 							for (var i = 0; i < len; i++) {
 								_html += tmp.replace('{name}','车辆骑行').replace('{time}',$.parseMillisecond(d.data[i].createAt)).replace('{price}',d.data[i].payAmount);
@@ -49,7 +49,7 @@
 				data :{userId:_this.userId},
 				success:function(d){
 					if(d.errorCode == 0 || d.success){
-						var len = d.data.length,_html='';
+						var len = d.data&&d.data.length||0,_html='';
 						if(len){
 							for (var i = 0; i < len; i++) {
 								_html += tmp.replace('{name}',d.data[i].payType == 0 ? '余额充值':'押金充值').replace('{time}',$.parseMillisecond(d.data[i].createAt)).replace('{price}',d.data[i].residualCash);

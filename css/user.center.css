@@ -340,11 +340,21 @@ input{
 }
 .recharge-item li{
 	width: 48.405797%;
-	height: 2.75rem;
-	line-height: 2.75rem;
+	height: 3.125rem;
+	line-height: 3.125rem;
 	background-color: #eee;
 	border: 1px solid #c9c9c9;
 	border-radius: 3px;
+}
+.recharge-item .ri-name{
+	padding-top: 0.46875rem;
+	line-height: 1.1875rem;
+}
+.recharge-item .ri-tip{
+	line-height: 1.1875rem;
+}
+.recharge-item li:nth-child(even){
+	float: right;
 }
 .recharge-item li.active{
 	border-color: #ed6d2b;
