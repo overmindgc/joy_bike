@@ -194,14 +194,9 @@ $(function() {
 						var markers=[];
 						var len=bikes.length;						
 						for (var i = 0; i < len; i += 1) {						
-	//						console.log([bikes[i].lastLongitude,bikes[i].lastDimension]);						
 							(function(index){
 								var icon = new AMap.Icon({
 						            image : 'images/index_bike.png',
-						            size : new AMap.Size(35,39.5)
-						    	});
-						    	var icon_cur = new AMap.Icon({
-						            image : 'images/index_bike_cur.png',
 						            size : new AMap.Size(35,39.5)
 						    	});
 								var marker = new AMap.Marker({
@@ -211,16 +206,24 @@ $(function() {
 									title: bikes[i].vehicleId,
 									map: map
 								});
-								marker.on('click',function(){
+								markers.push(marker);
+								markers[i].on('click',function(){
+									for(j=0;j<markers.length;j++){
+										markers[j].setIcon('images/index_bike.png');
+									};
+									this.setIcon('images/index_bike_cur.png');
 									vehicleId=this.H.title;
 									openInfo(index);
 									walkRoutes(index);								
 									$('.index_guide').show();
 									map.on('click',function(){
 										$('.index_guide').hide();
+										for(j=0;j<markers.length;j++){
+											markers[j].setIcon('images/index_bike.png');
+										};
 									})   
 								})
-								markers.push(marker);
+								
 							})(i);									
 						};
 						map.setFitView();
@@ -267,7 +270,13 @@ $(function() {
 														'</li>'+
 													'</ul>';
 						                $('.index_guide').html(popup);
-						                $('.index_orderBtn a').click(orderBike);
+						                $('.index_orderBtn a').on('click',function(){
+						                	orderBike();
+						                	for(j=0;j<markers.length;j++){
+												markers[j].hide();
+											};
+						                	markers[index].show();
+						                });
 						            }
 						            walkingDrawLine(index);
 						        }
@@ -283,37 +292,6 @@ $(function() {
 									if(extra_line3!=null){
 										extra_line3.setMap(null);
 									}
-								    //起点、终点图标
-								    /*var sicon = new AMap.Icon({
-								        image: "images/tripdetail_start.png",
-								        size:new AMap.Size(44,44),
-								        imageOffset: new AMap.Pixel(-334, -180)
-								    });
-								    var startmarker = new AMap.Marker({
-								        icon : sicon, //复杂图标
-								        visible : true,
-								        position : curPosition,
-								        map:map,
-								        offset : {
-								            x : -16,
-								            y : -40
-								        }
-								    });
-								    var eicon = new AMap.Icon({
-								        image: "images/tripdetail_end.png",
-								        size:new AMap.Size(44,44),
-								        imageOffset: new AMap.Pixel(-334, -134)
-								    });
-								    var endmarker = new AMap.Marker({
-								        icon : eicon, //复杂图标
-								        visible : true,
-								        position : [bikes[index].lastLongitude,bikes[index].lastDimension],
-								        map:map,
-								        offset : {
-								            x : -16,
-								            y : -40
-								        }
-								    });*/
 								    //起点到路线的起点 路线的终点到终点 绘制无道路部分
 								    var extra_path1 = new Array();
 								    extra_path1.push(curPosition);
@@ -476,8 +454,25 @@ $(function() {
 							},1000);
 						}
 						$('.index_cancel').on('click',function(){
-							cancelBike();
-							clearInterval(min);
+							var tip='<div class="border-box cancelbike-tip-msg trans-vc bgc-fff">'+
+										'<p class="ft-26 fc-66 lh-40">您确定取消预约吗？</p>'+
+										'<div class="cancelbike-tip-btns cl text-c">'+
+											'<span class="fl cancelbike-tip-cancel">取消</span>'+
+											'<span class="fr cancelbike-tip-confirm">确定</span>'+
+										'</div>'+
+									'</div>';
+							$(document.body).append(tip);
+							$('#mask').show();
+							$('.cancelbike-tip-confirm').on('click',function(){
+								cancelBike();
+								clearInterval(min);
+								$('.cancelbike-tip-msg').remove();
+								getBikes();
+							});
+							$('.cancelbike-tip-cancel').on('click',function(){
+								$('#mask').hide();
+								$('.cancelbike-tip-msg').remove();
+							})
 						});
 						$('.index_findBike').click(findBike);
 					}
@@ -521,21 +516,33 @@ $(function() {
 					console.log(data);
 					console.log(data.data);
 					if(data.status==200 && data.success &&data.errorCode==0){
-						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+						var cancelTip = '<div class="border-box order-fail trans-vc bgc-fff">'+
 											'<p class="ft-32 fc-66 lh-40">取消预约成功</p>'+
 										'</div>'
-						$(document.body).append(orderFail);
+						$(document.body).append(cancelTip);
 						$('#mask').show();
 						$('#mask').on('click',function(){
 							$('.order-fail').remove();
-							$(this).hide();
+							if(extra_line1!=null){
+								extra_line1.setMap(null);
+							}
+							if(extra_line2!=null){
+								extra_line2.setMap(null);
+							}
+							if(extra_line3!=null){
+								extra_line3.setMap(null);
+							}
+							for(j=0;j<markers.length;j++){
+								markers[j].setIcon('images/index_bike.png');
+								markers[j].show();
+							};
 						})
 						$('.index_guide').html('');
 					}else{
-						var orderFail = '<div class="border-box order-fail trans-vc bgc-fff">'+
+						var cancelTip = '<div class="border-box order-fail trans-vc bgc-fff">'+
 											'<p class="ft-32 fc-66 lh-40">取消预约失败</p>'+
 										'</div>'
-						$(document.body).append(orderFail);
+						$(document.body).append(cancelTip);
 						$('#mask').show();
 						$('#mask').on('click',function(){
 							$('.order-fail').remove();
@@ -560,6 +567,17 @@ $(function() {
 				success: function(data){
 					console.log(data);
 					console.log(data.data);
+					if(data.status==200 && data.success){
+						var findTip = '<div class="border-box order-fail trans-vc bgc-fff">'+
+											'<p class="ft-32 fc-66 lh-40">'+data.data+'</p>'+
+										'</div>'
+						$(document.body).append(findTip);
+						$('#mask').show();
+						$('#mask').on('click',function(){
+							$('.order-fail').remove();
+							$(this).hide();
+						})
+					}
 				}
 			});
 		}
