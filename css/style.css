@@ -23,7 +23,7 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .index_refresh img{width:2.125rem;height:2.125rem;}
 .index_tip{right:0.9375rem;bottom:0.125rem;}
 .index_tip img{width:1.875rem;height:1.875rem;}
-.index_guide{display:none;position: absolute;left:0;top:2.75rem;width:100%;background:#fff;z-index: 999;}
+.index_guide{position: absolute;left:0;top:2.75rem;width:100%;background:#fff;z-index: 999;}
 .index_guide ul li.index_bikePos{line-height:2.71875rem;padding-left: 2.5rem;padding-right:1rem;background: url(../images/index_bikePos.png) no-repeat #fff 1rem 0.8125rem;background-size: 0.875rem 1.15625rem;overflow:hidden;text-overflow:ellipsis;-webkit-text-overflow:ellipsis;white-space:nowrap;}
 .index_guide dt{padding-top:0.84375rem;}
 .index_guide ol{text-align: center;padding-bottom:1.125rem;}
@@ -55,14 +55,14 @@ html, body {margin: 0;height: 100%;width: 100%;position: absolute;}
 .trans-v{-webkit-transform: translate(0,-50%);transform: translate(0,-50%);}
 .trans-vc{-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);}
 .border-box{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;}
-.charging-tip-msg,.order-fail{position: fixed;top: 50%;left: 50%;width: 84.266667%;padding: 2rem 1.40625rem 1.34375rem;border-radius: 5px;z-index:99999;}
+.charging-tip-msg,.order-fail,.cancelbike-tip-msg{position: fixed;top: 50%;left: 50%;width: 84.266667%;padding: 2rem 1.40625rem 1.34375rem;border-radius: 5px;z-index:99999;}
 .order-fail{width:60%;padding-top:1.4rem;text-align: center;}
-.charging-tip-btns{margin-top: 1.875rem;text-align: center;}
-.charging-tip-btns span{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;width: 48.0662983%;height: 2.5rem;line-height: 2.5rem;border-radius: 3px;}
-.charging-tip-cancel{color: #ccc;background-color: #eee;border: 1px solid #eee;}
-.charging-tip-cancel:hover{background-color: #d3d3d3;color:#999;border: 1px solid #d3d3d3;}
-.charging-tip-confirm{color: #fff;background-color: #ED6D2B;}
-.charging-tip-confirm:hover{background-color: #da530e;}
+.charging-tip-btns,.cancelbike-tip-btns{margin-top: 1.875rem;text-align: center;}
+.charging-tip-btns span,.cancelbike-tip-btns span{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;width: 48.0662983%;height: 2.5rem;line-height: 2.5rem;border-radius: 3px;}
+.charging-tip-cancel,.cancelbike-tip-cancel{color: #ccc;background-color: #eee;border: 1px solid #eee;}
+.charging-tip-cancel:hover,.cancelbike-tip-cancel:hover{background-color: #d3d3d3;color:#999;border: 1px solid #d3d3d3;}
+.charging-tip-confirm,.cancelbike-tip-confirm{color: #fff;background-color: #ED6D2B;}
+.charging-tip-confirm:hover,.cancelbike-tip-confirm:hover{background-color: #da530e;}
 /*paysuccess css*/
 .paySuc{padding:1.9375rem 0;background: #fff url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAEAgMAAAAsf40aAAAADFBMVEX////x8fH9/f319fXyfgIsAAAAHElEQVQI12NgYNj6gIGBKTSCgYE5NIaBgTE0BAAniwOjxPBgUgAAAABJRU5ErkJggg==') repeat-x bottom;background-size: 0.46875rem 0.125rem;}
 .paySuc_bg{width:5.875rem;margin:0 auto;height:5.875rem;background: url(../images/paySuc_bg.png) no-repeat center;background-size: 100%;}
