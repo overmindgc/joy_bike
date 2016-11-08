@@ -16,7 +16,7 @@ $(function(){
 					dataType:'json',
 					success:function(res){
 						if(res.success){
-							$.cookie('realname',name,{expires:3600*24*7});
+							$.cookie('realname',name,{expires:24*7});
 							$.cookie('idcard',cardno,{expires:3600*24*7});
 							window.location.href ='http://60.205.142.55/forward/H5/joy_bike/authProcess.html';
 						}else{
