@@ -18,7 +18,6 @@ $(function() {
 		AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
 	});
 	//自定义定位标记
-    var toolBar;
     var customMarker = new AMap.Marker({
         offset: new AMap.Pixel(-17, -36),//相对于基点的位置
         icon: new AMap.Icon({  //复杂图标
@@ -28,20 +27,20 @@ $(function() {
         })
     });
 	//地图中添加地图操作ToolBar插件
+	var toolBar;
     map.plugin(["AMap.ToolBar"], function() {
         toolBar = new AMap.ToolBar({locationMarker: customMarker}); //设置地位标记为自定义标记
         map.addControl(toolBar);
     });
 
-
     onComplete();
-    var curPosition,curAddress,vehicleId,bikes,markers=[];
+    var curPosition=[],curAddress,vehicleId,bikes,markers=[];
+
 	var extra_line1,extra_line2,extra_line3;	
 	//解析定位结果
 	function onComplete(data) {
 		/*var lng=data.position.getLng();
 		var lat=data.position.getLat();
-		var curPosition=[];
 		curPosition.push(lng);
 		curPosition.push(lat);*/
 		curPosition=[116.295,40.048];
@@ -56,44 +55,47 @@ $(function() {
 	                geocoder_CallBack(result);
 	            }
 	        });
-	        addIcon(curPosition);
 	        map.setFitView();
 		});
 	    function geocoder_CallBack(data) {
 	        curAddress = data.regeocode.formattedAddress; //返回地址描述
 	    }
-		function addIcon(pos){	//添加点标记，并使用自己的icon		
-		    new AMap.Marker({
-		        map: map,
-				position: pos,
-		        icon: new AMap.Icon({            
-		            size: new AMap.Size(70, 79),  //图标大小
-		            image: "images/index_point.png",
-		            imageOffset: new AMap.Pixel(-8, 14)
-		        })        
-		    });
-		};
-
-/*	    //地图中心点指针事件回调函数
-	    var callBackFn = function(e) {
-	    	customMarker.setPosition(map.getCenter());
-	    };
-	    map.on('touchmove', callBackFn);
-	    //移除地图的touchmove事件的监听
-	    function removeListener() {
-	        map.off('touchmove', callBackFn);
-	    }*/
-		checkStatus();
-		
+	    //当前位置marker
+	    addIcon(curPosition);
+		//添加地图中心点大头针
+		toolBar.doLocation();	    
+	    map.on('touchmove', callBackFn);	    
+		checkStatus();		
 	};
-
+	
+	function addIcon(pos){	//添加点标记，并使用自己的icon		
+	    new AMap.Marker({
+	        map: map,
+			position: pos,
+	        icon: new AMap.Icon({            
+	            size: new AMap.Size(70, 79),  //图标大小
+	            image: "images/index_point.png",
+	            imageOffset: new AMap.Pixel(-8, 14)
+	        })        
+	    });
+	};
+	//地图中心点事件回调函数
+    var callBackFn = function(e){
+    	customMarker.setPosition(map.getCenter());
+    	console.log(customMarker.getPosition());
+    };
+    //移除地图的touchmove事件的监听
+    function removeListener(){
+        map.off('touchmove', callBackFn);
+    }
+    
 	function checkStatus(){
 		//判断用户使用状态
 		$.ajax({
 			type: "get",
 			url: window.ROUT+"user/useInfo",
 			data: {
-				userId:$.getCookie('userId')||15
+				userId:$.getCookie('userId')||12
 			},
 			success: function(data){
 				console.log(data);
@@ -168,29 +170,7 @@ $(function() {
 					$('.index_guide').html(popup);
 					var timestamp = Date.parse(new Date());
 					timestamp = timestamp / 1000;
-					countDown(evalData.info.endAt-timestamp);					
-					var min;
-					function countDown(t){
-						$(".index_booking b").text(t/60+':00');
-						var s=60;
-						min = setInterval(function () {
-							t--;							
-							s--;
-							if(s==-1){
-								s=59
-							}
-							if(s<10){
-								s='0'+s;
-							}
-							var m=Math.floor(t/60);
-							
-							$(".index_booking b").text(m+':'+s);
-							if (t == 0 && s==0) {
-								clearInterval(min);
-								$('.index_guide').html('');
-							}
-						},1000);
-					}
+					orderCountDown(evalData.info.endAt-timestamp);
 					$('.index_cancel').on('click',function(){
 						var tip='<div class="border-box cancelbike-tip-msg trans-vc bgc-fff">'+
 									'<p class="ft-32 fc-66 lh-40">您确定取消预约吗？</p>'+
@@ -203,9 +183,8 @@ $(function() {
 						$('#mask').show();
 						$('.cancelbike-tip-confirm').on('click',function(){
 							cancelBike();
-							clearInterval(min);
 							$('.cancelbike-tip-msg').remove();
-							getBikes();
+							getBikes(curPosition);
 						});
 						$('.cancelbike-tip-cancel').on('click',function(){
 							$('#mask').hide();
@@ -217,24 +196,23 @@ $(function() {
 					//骑行已结束未付款的订单-跳去自动扣款
 					console.log('您还有未付款的订单，支付后才可继续用车');
 				}else if(data.status==200 && data.success &&data.errorCode==2){
-					getBikes();
+					getBikes(curPosition);
 				}
 			}
 		});	
 	}
 	//将获得的车辆信息添加到地图上
-	function getBikes(){
+	function getBikes(pos){
 		$.ajax({
 			type: "get",
 			url: window.ROUT+"bicycle/available",
 			data: {
-				/*longitude:lng,
-				dimension:lat*/
+				/*longitude:pos[0],
+				dimension:pos[1]*/
 				longitude:'116.295',
 				dimension:'40.048'
 			},
 			success: function(data){
-				console.log(data.data);
 				if(data.status==200 && data.success){
 					var evalData=eval(data.data);
 					bikes=evalData;
@@ -253,14 +231,15 @@ $(function() {
 								map: map
 							});
 							markers.push(marker);
-							markers[i].on('click',function(){
+							marker.on('click',function(){
 								for(j=0;j<markers.length;j++){
 									markers[j].setIcon('images/index_bike.png');
 								};
 								this.setIcon('images/index_bike_cur.png');
 								vehicleId=this.H.title;
 								openInfo(index);
-								walkRoutes(index,markers);								
+								walkRoutes(customMarker.getPosition(),index,markers);
+								removeListener();
 								$('.index_guide').show();
 								map.on('click',function(){
 									$('.index_guide').hide();
@@ -277,6 +256,7 @@ $(function() {
 										markers[j].setIcon('images/index_bike.png');
 									};
 									closeInfoWindow();
+									map.on('touchmove', callBackFn);
 								})   
 							})
 							
@@ -286,7 +266,6 @@ $(function() {
 				}
 			}
 		});
-		$('.index_refresh').click(getBikes);
 	}
 	//在指定位置打开信息窗体
     function openInfo(i) {
@@ -332,10 +311,10 @@ $(function() {
         map.clearInfoWindow();
     } 
 	//预约车辆步行路线
-	function walkRoutes(index,markers){
+	function walkRoutes(pos,index,markers){
 	    var walking = new AMap.Walking({}); 
 	    //根据起终点坐标规划步行路线
-	    walking.search(curPosition,[bikes[index].lastLongitude,bikes[index].lastDimension],function(status, result){
+	    walking.search(pos,[bikes[index].lastLongitude,bikes[index].lastDimension],function(status, result){
 	    	var routeS = result.routes;
 	    	if (routeS.length <= 0) {
 	            console.log('不可行');
@@ -375,18 +354,19 @@ $(function() {
 	                $('.index_guide').html(popup);
 	                $('.index_orderBtn a').on('click',function(){
 	                	orderBike();
+	                	removeListener();
 	                	for(j=0;j<markers.length;j++){
 							markers[j].hide();
 						};
 	                	markers[index].show();
 	                });
 	            }
-	            walkingDrawLine(steps,index);
+	            walkingDrawLine(pos,steps,index);
 			}
 	    });
 	}
 	//绘制步行导航路线
-	function walkingDrawLine(steps,index) {
+	function walkingDrawLine(pos,steps,index) {
 		if(extra_line1!=null){
 			extra_line1.setMap(null);
 		}
@@ -398,7 +378,7 @@ $(function() {
 		}
 	    //起点到路线的起点 路线的终点到终点 绘制无道路部分
 	    var extra_path1 = new Array();
-	    extra_path1.push(curPosition);
+	    extra_path1.push(pos);
 	    extra_path1.push(steps[0].path[0]);
 	    extra_line1 = new AMap.Polyline({
 	        map: map,
@@ -441,7 +421,7 @@ $(function() {
 	            strokeWeight: 7
 	    });	    
 	    map.setFitView();
-	    map.setZoomAndCenter(16, curPosition);
+	    map.setZoomAndCenter(16, pos);
 	};
 	
 	function orderBike(){
@@ -449,7 +429,7 @@ $(function() {
 		var timestamp = Date.parse(new Date());
 		timestamp = timestamp / 1000;
 		var params = {};
-		params.userId = $.getCookie('userId')||15;
+		params.userId = $.getCookie('userId')||12;
 		params.bicycleCode = vehicleId;
 		params.beginAt = timestamp;
 		//预约车辆
@@ -460,6 +440,7 @@ $(function() {
 			data: JSON.stringify(params),
 			success: function(data){
 				console.log(data);
+				var evalData=eval('('+data.data+')');
 				if(data.status==200 && data.success &&data.errorCode==0){
 					var popup = '<div class="dp-flex dp-box" style="height:10rem;">'+
 									'<ul class="index_orderList dp-f-1">'+
@@ -480,31 +461,9 @@ $(function() {
 										'</li>'+
 										'<li class="index_cancel ft-26 bgc-ed6d2b">取消预约</li>'+
 									'</ul>'+
-								'</div>';
-					countDown(900);
+								'</div>';					
 					$('.index_guide').html(popup);
-					var min;
-					function countDown(t){
-						$(".index_booking b").text(t/60+':00');
-						var s=60;
-						min = setInterval(function () {
-							t--;							
-							s--;
-							if(s==-1){
-								s=59
-							}
-							if(s<10){
-								s='0'+s;
-							}
-							var m=Math.floor(t/60);
-							
-							$(".index_booking b").text(m+':'+s);
-							if (t == 0 && s==0) {
-								clearInterval(min);
-								$('.index_guide').html('');
-							}
-						},1000);
-					}
+					orderCountDown(evalData.endAt-evalData.startAt);
 					$('.index_cancel').on('click',function(){
 						var tip='<div class="border-box cancelbike-tip-msg trans-vc bgc-fff">'+
 									'<p class="ft-32 fc-66 lh-40">您确定取消预约吗？</p>'+
@@ -517,9 +476,9 @@ $(function() {
 						$('#mask').show();
 						$('.cancelbike-tip-confirm').on('click',function(){
 							cancelBike();
-							clearInterval(min);
 							$('.cancelbike-tip-msg').remove();
-							getBikes();
+							/*getBikes();*/
+							map.on('touchmove', callBackFn);
 						});
 						$('.cancelbike-tip-cancel').on('click',function(){
 							$('#mask').hide();
@@ -554,10 +513,27 @@ $(function() {
 			}
 		});
 	}
-	
+	function orderCountDown(t){
+		if (t < 1) {
+            return;
+        }
+        var seconds = t ;
+        var min = setInterval(function(){
+            seconds -= 1;
+            if (seconds == 0) {
+                clearInterval(min);
+                $('.index_guide').html('');            
+                getBikes();
+            }
+            var minute = Math.floor(seconds / 60);
+            var second = Math.floor(seconds - minute * 60);
+            if(second<10){second="0"+second}
+            $(".index_booking b").text(minute+':'+second);
+        }, 1000);
+	}
 	function cancelBike(){
 		var params = {};
-		params.userId = $.getCookie('userId')||15;
+		params.userId = $.getCookie('userId')||12;
 		params.bicycleCode = vehicleId;
 		//取消预约
 		$.ajax({
@@ -615,7 +591,7 @@ $(function() {
 			url: window.ROUT+"bicycle/lookup",
 			contentType:'application/json',
 			data: {
-				userId:$.getCookie('userId')||15,
+				userId:$.getCookie('userId')||12,
 				bicycleCode:vehicleId
 			},
 			success: function(data){
@@ -635,6 +611,21 @@ $(function() {
 			}
 		});
 	}
+	$('.index_refresh').on('click',function(){
+		map.clearMap();
+		$('.index_guide').html('');
+		addIcon(curPosition);
+		toolBar.doLocation();
+		map.on('touchmove', callBackFn);
+		getBikes(map.getCenter());
+	});
+	$('.amap-geolocation-con .amap-geo').on('click',function(){
+		map.clearMap();
+		$('.index_guide').html('');
+		addIcon(curPosition);
+		customMarker.setPosition(curPosition);
+		getBikes(curPosition);
+	})
 	//GPS数据上报
 	function sendData(){
 		var timestamp = Date.parse(new Date());
