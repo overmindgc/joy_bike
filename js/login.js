@@ -104,8 +104,8 @@ $(function(){
 				type:"post",
 				success:function(res){
 					if(res.success){//请求成功，跳转
-						$.setCookie('userId',res.data.id,{expires:3600*24*7});
-						window.location.href="http://h5.joybike.com.cn/joybikeH5/joy_bike/auth.html";
+						$.setCookie('userId',res.data.id,{expires:24*7});
+						window.location.href="http://60.205.142.55/forward/H5/joy_bike/auth.html";
 					}else{
 						popup(res.errorMessage);
 					}

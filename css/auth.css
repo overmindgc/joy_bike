@@ -255,11 +255,11 @@ html, body {
   width: 1.5rem;
   height: 1.5rem;
   display: inline-block;
-  background: url("../images/login/common_xuanze_n.png") no-repeat;
+  background: url("../images/login/common_xuanze_n.png") center no-repeat;
   background-size: contain;
 }
 #auth_deposit .deposit_way .choseState.chosed {
-  background: url("../images/login/common_xuanze_y.png") no-repeat;
+  background: url("../images/login/common_xuanze_y.png") center no-repeat;
   background-size: contain;
 }
 #auth_deposit .wx_logo {
@@ -296,7 +296,7 @@ html, body {
 .authSuccess {
   width: 100%;
   height: 18.125rem;
-  background: url("../images/auth/authSuccess.png") no-repeat;
+  background: url("../images/auth/authSuccess.png") center no-repeat;
   background-size: cover;
 }
 
